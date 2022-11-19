@@ -25,14 +25,14 @@ class MovieTable extends Equatable {
   factory MovieTable.fromMap(Map<String, dynamic> map) => MovieTable(
         id: map['id'],
         title: map['title'],
-        posterPath: map['posterPath'],
+        posterPath: map['poster_path'],
         overview: map['overview'],
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
-        'posterPath': posterPath,
+        'poster_path': posterPath,
         'overview': overview,
       };
 
@@ -44,6 +44,5 @@ class MovieTable extends Equatable {
       );
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id, title, posterPath, overview];
 }

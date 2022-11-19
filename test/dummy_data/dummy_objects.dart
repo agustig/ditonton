@@ -54,6 +54,6 @@ final testMovieTable = MovieTable(
 final testMovieMap = {
   'id': 1,
   'overview': 'overview',
-  'posterPath': 'posterPath',
+  'poster_path': 'posterPath',
   'title': 'title',
 };

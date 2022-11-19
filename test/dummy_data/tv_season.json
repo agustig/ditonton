@@ -1,0 +1,27 @@
+{
+	"_id": "52589f06760ee34661632400",
+	"air_date": "2011-02-28",
+	"episodes": [
+		{
+			"air_date": "2011-02-28",
+			"episode_number": 1,
+			"id": 757251,
+			"name": "Episode 1",
+			"overview": "Teresa is a humble woman who gets caught up in the underworld for the inheritance of a risky love.",
+			"production_code": "",
+			"runtime": 42,
+			"season_number": 1,
+			"show_id": 31586,
+			"still_path": "/2uDeyXAUQAo21kVVJmG6yRq0ddn.jpg",
+			"vote_average": 0.0,
+			"vote_count": 0,
+			"crew": [],
+			"guest_stars": []
+		}
+	],
+	"name": "Season 1",
+	"overview": "A sudden turn of events forces a young Sinaloan money-changer into the dangerous world of drug trafficking, where she gradually rises in the ranks.",
+	"id": 43098,
+	"poster_path": "/uBTlJDdPpRxYTfUnKw4wbuIGSEK.jpg",
+	"season_number": 1
+}

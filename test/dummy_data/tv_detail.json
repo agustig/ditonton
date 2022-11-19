@@ -1,0 +1,95 @@
+{
+	"adult": false,
+	"backdrop_path": "/3XjDhPzj7Myr8yzsTO8UB6E2oAu.jpg",
+	"created_by": [],
+	"episode_run_time": [
+		42
+	],
+	"first_air_date": "2011-02-28",
+	"genres": [
+		{
+			"id": 18,
+			"name": "Drama"
+		}
+	],
+	"homepage": "https://www.telemundo.com/shows/la-reina-del-sur",
+	"id": 31586,
+	"in_production": true,
+	"languages": [
+		"zh"
+	],
+	"last_air_date": "2022-11-11",
+	"last_episode_to_air": {
+		"air_date": "2022-11-11",
+		"episode_number": 18,
+		"id": 4035799,
+		"name": "Episode 18",
+		"overview": "",
+		"production_code": "",
+		"runtime": null,
+		"season_number": 3,
+		"show_id": 31586,
+		"still_path": null,
+		"vote_average": 0.0,
+		"vote_count": 0
+	},
+	"name": "La Reina del Sur",
+	"next_episode_to_air": {
+		"air_date": "2022-11-14",
+		"episode_number": 19,
+		"id": 4035801,
+		"name": "Episode 19",
+		"overview": "",
+		"production_code": "",
+		"runtime": null,
+		"season_number": 3,
+		"show_id": 31586,
+		"still_path": null,
+		"vote_average": 0.0,
+		"vote_count": 0
+	},
+	"networks": [
+		{
+			"id": 193,
+			"name": "Telemundo",
+			"logo_path": "/mieMBXx82qgY8nmnyaH0rY2D943.png",
+			"origin_country": "US"
+		}
+	],
+	"number_of_episodes": 143,
+	"number_of_seasons": 3,
+	"origin_country": [
+		"US"
+	],
+	"original_language": "es",
+	"original_name": "La Reina del Sur",
+	"overview": "After years of blood, sweat and tears, a woman of humble origin ends up becoming a drug trafficking legend, with all that that means...",
+	"popularity": 2200.896,
+	"poster_path": "/uBTlJDdPpRxYTfUnKw4wbuIGSEK.jpg",
+	"production_companies": [
+		{
+			"id": 120759,
+			"logo_path": "/iCH3WSnIKz53JdFjlhn1rQ2bS0P.png",
+			"name": "Telemundo Global Studios",
+			"origin_country": "US"
+		}
+	],
+	"production_countries": [],
+	"seasons": [
+		{
+			"air_date": "2011-02-28",
+			"episode_count": 63,
+			"id": 43098,
+			"name": "Season 1",
+			"overview": "A sudden turn of events forces a young Sinaloan money-changer into the dangerous world of drug trafficking, where she gradually rises in the ranks.",
+			"poster_path": "/uBTlJDdPpRxYTfUnKw4wbuIGSEK.jpg",
+			"season_number": 1
+		}
+	],
+	"spoken_languages": [],
+	"status": "Returning Series",
+	"tagline": "",
+	"type": "Scripted",
+	"vote_average": 7.8,
+	"vote_count": 1377
+}
