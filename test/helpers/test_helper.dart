@@ -10,6 +10,7 @@ import 'package:ditonton/domain/usecases/get_top_rated_tvs.dart';
 import 'package:ditonton/domain/usecases/get_tv_detail.dart';
 import 'package:ditonton/domain/usecases/get_tv_recommendations.dart';
 import 'package:ditonton/domain/usecases/get_on_the_air_tvs.dart';
+import 'package:ditonton/domain/usecases/get_watchlist_movies.dart';
 import 'package:ditonton/domain/usecases/get_watchlist_tv_status.dart';
 import 'package:ditonton/domain/usecases/get_watchlist_tvs.dart';
 import 'package:ditonton/domain/usecases/remove_watchlist_tv.dart';
@@ -19,8 +20,7 @@ import 'package:ditonton/presentation/provider/popular_tvs_notifier.dart';
 import 'package:ditonton/presentation/provider/top_rated_tvs_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/on_the_air_tvs_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_tv_notifier.dart';
+import 'package:ditonton/presentation/provider/watchlist_notifier.dart';
 import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,6 +28,7 @@ import 'package:http/http.dart' as http;
   MovieRepository,
   MovieRemoteDataSource,
   MovieLocalDataSource,
+  GetWatchlistMovies,
   TvRepository,
   TvRemoteDataSource,
   TvLocalDataSource,
@@ -46,8 +47,7 @@ import 'package:http/http.dart' as http;
   SaveWatchlistTv,
   RemoveWatchlistTv,
   TvDetailNotifier,
-  WatchlistMovieNotifier,
-  WatchlistTvNotifier,
+  WatchlistNotifier,
 ], customMocks: [
   MockSpec<http.Client>(as: #MockHttpClient)
 ])

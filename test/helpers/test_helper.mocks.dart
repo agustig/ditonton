@@ -4,8 +4,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i19;
-import 'dart:convert' as _i44;
-import 'dart:typed_data' as _i45;
+import 'dart:convert' as _i43;
+import 'dart:typed_data' as _i44;
 import 'dart:ui' as _i37;
 
 import 'package:dartz/dartz.dart' as _i2;
@@ -48,10 +48,7 @@ import 'package:ditonton/presentation/provider/popular_tvs_notifier.dart'
 import 'package:ditonton/presentation/provider/top_rated_tvs_notifier.dart'
     as _i39;
 import 'package:ditonton/presentation/provider/tv_detail_notifier.dart' as _i40;
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart'
-    as _i42;
-import 'package:ditonton/presentation/provider/watchlist_tv_notifier.dart'
-    as _i43;
+import 'package:ditonton/presentation/provider/watchlist_notifier.dart' as _i42;
 import 'package:http/http.dart' as _i17;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:sqflite/sqflite.dart' as _i33;
@@ -540,6 +537,34 @@ class MockMovieLocalDataSource extends _i1.Mock
         returnValue:
             _i19.Future<List<_i26.MovieTable>>.value(<_i26.MovieTable>[]),
       ) as _i19.Future<List<_i26.MovieTable>>);
+}
+
+/// A class which mocks [GetWatchlistMovies].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetWatchlistMovies extends _i1.Mock
+    implements _i15.GetWatchlistMovies {
+  MockGetWatchlistMovies() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i19.Future<_i2.Either<_i20.Failure, List<_i21.Movie>>> execute() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [],
+        ),
+        returnValue:
+            _i19.Future<_i2.Either<_i20.Failure, List<_i21.Movie>>>.value(
+                _FakeEither_0<_i20.Failure, List<_i21.Movie>>(
+          this,
+          Invocation.method(
+            #execute,
+            [],
+          ),
+        )),
+      ) as _i19.Future<_i2.Either<_i20.Failure, List<_i21.Movie>>>);
 }
 
 /// A class which mocks [TvRepository].
@@ -1131,7 +1156,7 @@ class MockOnTheAirTvsNotifier extends _i1.Mock
   @override
   _i36.RequestState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _i36.RequestState.Empty,
+        returnValue: _i36.RequestState.empty,
       ) as _i36.RequestState);
   @override
   List<_i27.Tv> get tvList => (super.noSuchMethod(
@@ -1211,7 +1236,7 @@ class MockPopularTvsNotifier extends _i1.Mock
   @override
   _i36.RequestState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _i36.RequestState.Empty,
+        returnValue: _i36.RequestState.empty,
       ) as _i36.RequestState);
   @override
   List<_i27.Tv> get tvList => (super.noSuchMethod(
@@ -1291,7 +1316,7 @@ class MockTopRatedTvsNotifier extends _i1.Mock
   @override
   _i36.RequestState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _i36.RequestState.Empty,
+        returnValue: _i36.RequestState.empty,
       ) as _i36.RequestState);
   @override
   List<_i27.Tv> get tvList => (super.noSuchMethod(
@@ -1539,7 +1564,7 @@ class MockTvDetailNotifier extends _i1.Mock implements _i40.TvDetailNotifier {
   @override
   _i36.RequestState get tvState => (super.noSuchMethod(
         Invocation.getter(#tvState),
-        returnValue: _i36.RequestState.Empty,
+        returnValue: _i36.RequestState.empty,
       ) as _i36.RequestState);
   @override
   List<_i27.Tv> get tvRecommendations => (super.noSuchMethod(
@@ -1549,7 +1574,7 @@ class MockTvDetailNotifier extends _i1.Mock implements _i40.TvDetailNotifier {
   @override
   _i36.RequestState get recommendationState => (super.noSuchMethod(
         Invocation.getter(#recommendationState),
-        returnValue: _i36.RequestState.Empty,
+        returnValue: _i36.RequestState.empty,
       ) as _i36.RequestState);
   @override
   String get message => (super.noSuchMethod(
@@ -1676,12 +1701,11 @@ class MockTvDetailNotifier extends _i1.Mock implements _i40.TvDetailNotifier {
       );
 }
 
-/// A class which mocks [WatchlistMovieNotifier].
+/// A class which mocks [WatchlistNotifier].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockWatchlistMovieNotifier extends _i1.Mock
-    implements _i42.WatchlistMovieNotifier {
-  MockWatchlistMovieNotifier() {
+class MockWatchlistNotifier extends _i1.Mock implements _i42.WatchlistNotifier {
+  MockWatchlistNotifier() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -1694,78 +1718,6 @@ class MockWatchlistMovieNotifier extends _i1.Mock
         ),
       ) as _i15.GetWatchlistMovies);
   @override
-  List<_i21.Movie> get watchlistMovies => (super.noSuchMethod(
-        Invocation.getter(#watchlistMovies),
-        returnValue: <_i21.Movie>[],
-      ) as List<_i21.Movie>);
-  @override
-  _i36.RequestState get watchlistState => (super.noSuchMethod(
-        Invocation.getter(#watchlistState),
-        returnValue: _i36.RequestState.Empty,
-      ) as _i36.RequestState);
-  @override
-  String get message => (super.noSuchMethod(
-        Invocation.getter(#message),
-        returnValue: '',
-      ) as String);
-  @override
-  bool get hasListeners => (super.noSuchMethod(
-        Invocation.getter(#hasListeners),
-        returnValue: false,
-      ) as bool);
-  @override
-  _i19.Future<void> fetchWatchlistMovies() => (super.noSuchMethod(
-        Invocation.method(
-          #fetchWatchlistMovies,
-          [],
-        ),
-        returnValue: _i19.Future<void>.value(),
-        returnValueForMissingStub: _i19.Future<void>.value(),
-      ) as _i19.Future<void>);
-  @override
-  void addListener(_i37.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(
-          #addListener,
-          [listener],
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
-  void removeListener(_i37.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(
-          #removeListener,
-          [listener],
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
-  void dispose() => super.noSuchMethod(
-        Invocation.method(
-          #dispose,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
-  @override
-  void notifyListeners() => super.noSuchMethod(
-        Invocation.method(
-          #notifyListeners,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
-}
-
-/// A class which mocks [WatchlistTvNotifier].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockWatchlistTvNotifier extends _i1.Mock
-    implements _i43.WatchlistTvNotifier {
-  MockWatchlistTvNotifier() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
   _i16.GetWatchlistTvs get getWatchlistTvs => (super.noSuchMethod(
         Invocation.getter(#getWatchlistTvs),
         returnValue: _FakeGetWatchlistTvs_14(
@@ -1774,6 +1726,11 @@ class MockWatchlistTvNotifier extends _i1.Mock
         ),
       ) as _i16.GetWatchlistTvs);
   @override
+  List<_i21.Movie> get watchlistMovies => (super.noSuchMethod(
+        Invocation.getter(#watchlistMovies),
+        returnValue: <_i21.Movie>[],
+      ) as List<_i21.Movie>);
+  @override
   List<_i27.Tv> get watchlistTvs => (super.noSuchMethod(
         Invocation.getter(#watchlistTvs),
         returnValue: <_i27.Tv>[],
@@ -1781,7 +1738,7 @@ class MockWatchlistTvNotifier extends _i1.Mock
   @override
   _i36.RequestState get watchlistState => (super.noSuchMethod(
         Invocation.getter(#watchlistState),
-        returnValue: _i36.RequestState.Empty,
+        returnValue: _i36.RequestState.empty,
       ) as _i36.RequestState);
   @override
   String get message => (super.noSuchMethod(
@@ -1794,9 +1751,9 @@ class MockWatchlistTvNotifier extends _i1.Mock
         returnValue: false,
       ) as bool);
   @override
-  _i19.Future<void> fetchWatchlistTvs() => (super.noSuchMethod(
+  _i19.Future<void> fetchWatchlist() => (super.noSuchMethod(
         Invocation.method(
-          #fetchWatchlistTvs,
+          #fetchWatchlist,
           [],
         ),
         returnValue: _i19.Future<void>.value(),
@@ -1889,7 +1846,7 @@ class MockHttpClient extends _i1.Mock implements _i17.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i44.Encoding? encoding,
+    _i43.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1919,7 +1876,7 @@ class MockHttpClient extends _i1.Mock implements _i17.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i44.Encoding? encoding,
+    _i43.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1949,7 +1906,7 @@ class MockHttpClient extends _i1.Mock implements _i17.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i44.Encoding? encoding,
+    _i43.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1979,7 +1936,7 @@ class MockHttpClient extends _i1.Mock implements _i17.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i44.Encoding? encoding,
+    _i43.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -2018,7 +1975,7 @@ class MockHttpClient extends _i1.Mock implements _i17.Client {
         returnValue: _i19.Future<String>.value(''),
       ) as _i19.Future<String>);
   @override
-  _i19.Future<_i45.Uint8List> readBytes(
+  _i19.Future<_i44.Uint8List> readBytes(
     Uri? url, {
     Map<String, String>? headers,
   }) =>
@@ -2028,8 +1985,8 @@ class MockHttpClient extends _i1.Mock implements _i17.Client {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i19.Future<_i45.Uint8List>.value(_i45.Uint8List(0)),
-      ) as _i19.Future<_i45.Uint8List>);
+        returnValue: _i19.Future<_i44.Uint8List>.value(_i44.Uint8List(0)),
+      ) as _i19.Future<_i44.Uint8List>);
   @override
   _i19.Future<_i17.StreamedResponse> send(_i17.BaseRequest? request) =>
       (super.noSuchMethod(

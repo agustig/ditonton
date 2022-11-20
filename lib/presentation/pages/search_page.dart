@@ -40,15 +40,15 @@ class SearchPage extends StatelessWidget {
             Consumer<TvSearchNotifier>(builder: (context, tvData, _) {
               return Consumer<MovieSearchNotifier>(
                 builder: (context, movieData, _) {
-                  if (movieData.state == RequestState.Loading ||
-                      tvData.state == RequestState.Loading) {
+                  if (movieData.state == RequestState.loading ||
+                      tvData.state == RequestState.loading) {
                     return Expanded(
                       child: Center(
                         child: CircularProgressIndicator(),
                       ),
                     );
-                  } else if (movieData.state == RequestState.Loaded &&
-                      tvData.state == RequestState.Loaded) {
+                  } else if (movieData.state == RequestState.loaded &&
+                      tvData.state == RequestState.loaded) {
                     final movieResults = movieData.searchResult;
                     final tvResults = tvData.searchResult;
                     return Expanded(

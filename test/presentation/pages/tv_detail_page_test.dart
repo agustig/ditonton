@@ -31,7 +31,7 @@ void main() {
   testWidgets('Page should display center progress bar when loading',
       (tester) async {
     // arrange
-    when(mockNotifier.tvState).thenReturn(RequestState.Loading);
+    when(mockNotifier.tvState).thenReturn(RequestState.loading);
     // act
     final centerFinder = find.byType(Center);
     final progressBarFinder = find.byType(CircularProgressIndicator);
@@ -44,14 +44,14 @@ void main() {
   group('Tv Detail Loaded', () {
     setUp(() {
       // group arrange
-      when(mockNotifier.tvState).thenReturn(RequestState.Loaded);
+      when(mockNotifier.tvState).thenReturn(RequestState.loaded);
       when(mockNotifier.tv).thenReturn(tTvDetail);
     });
 
     testWidgets('should display DetailContent when data is loaded',
         (tester) async {
       // arrange
-      when(mockNotifier.recommendationState).thenReturn(RequestState.Loading);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.loading);
       when(mockNotifier.isTvAddedToWatchlist).thenAnswer((_) => false);
       when(mockNotifier.isSeasonExpanded(tTvDetail.seasons[0]))
           .thenAnswer((_) => false);
@@ -68,7 +68,7 @@ void main() {
         'should display DetailContent with Recommendations ListView when loaded',
         (tester) async {
       // arrange
-      when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
       when(mockNotifier.tvRecommendations).thenReturn(tTvList);
       when(mockNotifier.isTvAddedToWatchlist).thenAnswer((_) => false);
       when(mockNotifier.isSeasonExpanded(tTvDetail.seasons[0]))
@@ -83,7 +83,7 @@ void main() {
     testWidgets('should return episode info when season is expanded',
         (tester) async {
       // arrange
-      when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
       when(mockNotifier.tvRecommendations).thenReturn(tTvList);
       when(mockNotifier.isTvAddedToWatchlist).thenAnswer((_) => false);
       when(mockNotifier.isSeasonExpanded(tTvDetail.seasons[0]))
@@ -99,7 +99,7 @@ void main() {
         'should show checked watchlist button when tv is added to watchlist',
         (tester) async {
       // arrange
-      when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
       when(mockNotifier.tvRecommendations).thenReturn(tTvList);
       when(mockNotifier.isTvAddedToWatchlist).thenAnswer((_) => true);
       when(mockNotifier.isSeasonExpanded(tTvDetail.seasons[0]))
@@ -114,7 +114,7 @@ void main() {
 
   testWidgets('Page should display text with message when Error',
       (WidgetTester tester) async {
-    when(mockNotifier.tvState).thenReturn(RequestState.Error);
+    when(mockNotifier.tvState).thenReturn(RequestState.error);
     when(mockNotifier.message).thenReturn('Error message');
 
     final textFinder = find.byKey(Key('error_message'));

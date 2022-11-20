@@ -31,13 +31,13 @@ class TvDetailNotifier extends ChangeNotifier {
   late TvDetail _tv;
   TvDetail get tv => _tv;
 
-  RequestState _tvState = RequestState.Empty;
+  RequestState _tvState = RequestState.empty;
   RequestState get tvState => _tvState;
 
   List<Tv> _tvRecommendations = [];
   List<Tv> get tvRecommendations => _tvRecommendations;
 
-  RequestState _recommendationState = RequestState.Empty;
+  RequestState _recommendationState = RequestState.empty;
   RequestState get recommendationState => _recommendationState;
 
   TvSeason? _expandedSeason;
@@ -50,18 +50,18 @@ class TvDetailNotifier extends ChangeNotifier {
   bool get isTvAddedToWatchlist => _isTvAddedToWatchlist;
 
   Future<void> fetchTvDetail(int id) async {
-    _tvState = RequestState.Loading;
+    _tvState = RequestState.loading;
     _expandedSeason = null;
     notifyListeners();
     final detailResult = await getTvDetail.execute(id);
     detailResult.fold(
       (failure) {
-        _tvState = RequestState.Error;
+        _tvState = RequestState.error;
         _message = failure.message;
         notifyListeners();
       },
       (tv) async {
-        _tvState = RequestState.Loaded;
+        _tvState = RequestState.loaded;
         _tv = tv;
         notifyListeners();
       },
@@ -69,18 +69,18 @@ class TvDetailNotifier extends ChangeNotifier {
   }
 
   Future<void> fetchTvRecommendations(int id) async {
-    _recommendationState = RequestState.Loading;
+    _recommendationState = RequestState.loading;
     notifyListeners();
 
     final recommendationResult = await getTvRecommendations.execute(id);
     recommendationResult.fold(
       (failure) {
-        _recommendationState = RequestState.Error;
+        _recommendationState = RequestState.error;
         _message = failure.message;
         notifyListeners();
       },
       (tvs) {
-        _recommendationState = RequestState.Loaded;
+        _recommendationState = RequestState.loaded;
         _tvRecommendations = tvs;
         notifyListeners();
       },
