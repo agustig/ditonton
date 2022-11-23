@@ -10,6 +10,15 @@ import 'package:watchlist/watchlist.dart';
 final locator = GetIt.instance;
 
 void init() {
+  // bloc
+  locator.registerFactory(
+    () => SearchBloc(
+      searchMovies: locator(),
+      searchTvs: locator(),
+    ),
+  );
+  locator.registerFactory(() => SearchFilterCubit());
+
   // provider
   locator.registerFactory(
     () => MovieListNotifier(
@@ -27,7 +36,6 @@ void init() {
       removeWatchlist: locator(),
     ),
   );
-  locator.registerFactory(() => MovieSearchNotifier(searchMovies: locator()));
   locator.registerFactory(() => PopularMoviesNotifier(locator()));
   locator.registerFactory(
       () => TopRatedMoviesNotifier(getTopRatedMovies: locator()));
@@ -56,7 +64,6 @@ void init() {
   locator.registerFactory(() => OnTheAirTvsNotifier(locator()));
   locator.registerFactory(() => PopularTvsNotifier(locator()));
   locator.registerFactory(() => TopRatedTvsNotifier(locator()));
-  locator.registerFactory(() => TvSearchNotifier(locator()));
 
   // use case
   locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));

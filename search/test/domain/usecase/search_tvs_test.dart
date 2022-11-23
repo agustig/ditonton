@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:search/domain/usecase/search_tvs.dart';
-import 'package:tv/tv.dart' show Tv;
+import 'package:tv/tv.dart' show Tv, TvRepository;
 
-import '../../helpers/test_helpers.mocks.dart';
+class MockTvRepository extends Mock implements TvRepository {}
 
 void main() {
   late SearchTvs usecase;
@@ -28,7 +28,7 @@ void main() {
 
   test('should get list of Tv from the repository', () async {
     // arrange
-    when(mockTvRepository.searchTvs(tQuery))
+    when(() => mockTvRepository.searchTvs(tQuery))
         .thenAnswer((_) async => Right(tTvList));
     // act
     final result = await usecase.execute(tQuery);
