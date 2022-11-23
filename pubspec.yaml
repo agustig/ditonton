@@ -44,9 +44,12 @@ dependencies:
     path: watchlist
 
 dev_dependencies:
+  bloc_test: ^9.1.0
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  mockito: ^5.3.2
+  mocktail: ^0.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
