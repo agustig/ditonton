@@ -47,7 +47,7 @@ import 'package:sqflite/sqflite.dart' as _i16;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeMovieDetailResponse_0 extends _i1.SmartFake
-    implements _i2.MovieDetailResponse {
+    implements _i2.MovieDetailModel {
   _FakeMovieDetailResponse_0(
     Object parent,
     Invocation parentInvocation,
@@ -310,21 +310,21 @@ class MockMovieRemoteDataSource extends _i1.Mock
             _i15.Future<List<_i18.MovieModel>>.value(<_i18.MovieModel>[]),
       ) as _i15.Future<List<_i18.MovieModel>>);
   @override
-  _i15.Future<_i2.MovieDetailResponse> getMovieDetail(int? id) =>
+  _i15.Future<_i2.MovieDetailModel> getMovieDetail(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMovieDetail,
           [id],
         ),
-        returnValue: _i15.Future<_i2.MovieDetailResponse>.value(
-            _FakeMovieDetailResponse_0(
+        returnValue:
+            _i15.Future<_i2.MovieDetailModel>.value(_FakeMovieDetailResponse_0(
           this,
           Invocation.method(
             #getMovieDetail,
             [id],
           ),
         )),
-      ) as _i15.Future<_i2.MovieDetailResponse>);
+      ) as _i15.Future<_i2.MovieDetailModel>);
   @override
   _i15.Future<List<_i18.MovieModel>> getMovieRecommendations(int? id) =>
       (super.noSuchMethod(

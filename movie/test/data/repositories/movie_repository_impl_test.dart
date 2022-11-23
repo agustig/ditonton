@@ -29,37 +29,19 @@ void main() {
   });
 
   const tMovieModel = MovieModel(
-    adult: false,
-    backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-    genreIds: [14, 28],
     id: 557,
-    originalTitle: 'Spider-Man',
     overview:
         'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
-    popularity: 60.441,
     posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
-    releaseDate: '2002-05-01',
     title: 'Spider-Man',
-    video: false,
-    voteAverage: 7.2,
-    voteCount: 13507,
   );
 
   const tMovie = Movie(
-    adult: false,
-    backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-    genreIds: [14, 28],
     id: 557,
-    originalTitle: 'Spider-Man',
     overview:
         'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
-    popularity: 60.441,
     posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
-    releaseDate: '2002-05-01',
     title: 'Spider-Man',
-    video: false,
-    voteAverage: 7.2,
-    voteCount: 13507,
   );
 
   final tMovieModelList = <MovieModel>[tMovieModel];
@@ -192,26 +174,14 @@ void main() {
 
   group('Get Movie Detail', () {
     const tId = 1;
-    const tMovieResponse = MovieDetailResponse(
-      adult: false,
-      backdropPath: 'backdropPath',
-      budget: 100,
+    const tMovieResponse = MovieDetailModel(
       genres: [GenreModel(id: 1, name: 'Action')],
-      homepage: "https://google.com",
       id: 1,
-      imdbId: 'imdb1',
-      originalLanguage: 'en',
-      originalTitle: 'originalTitle',
       overview: 'overview',
-      popularity: 1,
       posterPath: 'posterPath',
       releaseDate: 'releaseDate',
-      revenue: 12000,
       runtime: 120,
-      status: 'Status',
-      tagline: 'Tagline',
       title: 'title',
-      video: false,
       voteAverage: 1,
       voteCount: 1,
     );
