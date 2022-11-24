@@ -18,6 +18,12 @@ void init() {
     ),
   );
   locator.registerFactory(() => SearchFilterCubit());
+  locator.registerFactory(
+    () => WatchlistCubit(
+      getWatchlistMovies: locator(),
+      getWatchlistTvs: locator(),
+    ),
+  );
 
   // provider
   locator.registerFactory(
@@ -39,12 +45,6 @@ void init() {
   locator.registerFactory(() => PopularMoviesNotifier(locator()));
   locator.registerFactory(
       () => TopRatedMoviesNotifier(getTopRatedMovies: locator()));
-  locator.registerFactory(
-    () => WatchlistNotifier(
-      getWatchlistMovies: locator(),
-      getWatchlistTvs: locator(),
-    ),
-  );
   locator.registerFactory(
     () => TvListNotifier(
       getOnTheAirTvs: locator(),

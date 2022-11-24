@@ -2,8 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/movie.dart';
 import 'package:provider/provider.dart';
-import 'package:tv/tv.dart' show Tv, TvCard;
-import 'package:watchlist/presentation/provider/watchlist_notifier.dart';
+import 'package:tv/tv.dart';
+import 'package:watchlist/presentation/cubit/watchlist_cubit.dart';
 
 class WatchlistPage extends StatefulWidget {
   const WatchlistPage({super.key});
@@ -16,9 +16,7 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<WatchlistNotifier>(context, listen: false)
-            .fetchWatchlist());
+    Future.microtask(() => context.read<WatchlistCubit>().fetchWatchlist());
   }
 
   @override
@@ -28,55 +26,50 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   }
 
   @override
-  void didPopNext() {
-    Provider.of<WatchlistNotifier>(context, listen: false).fetchWatchlist();
-  }
+  void didPopNext() => context.read<WatchlistCubit>().fetchWatchlist();
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WatchlistNotifier>(
-      builder: (context, data, child) {
-        return DefaultTabController(
-          length: 2,
-          child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Watchlist'),
-                bottom: (data.watchlistState == RequestState.loaded)
-                    ? TabBar(
-                        tabs: [
-                          Text('Movies', style: kHeading6),
-                          Text('TVs', style: kHeading6),
-                        ],
-                        indicatorColor: kMikadoYellow,
-                      )
-                    : null,
-              ),
-              body: _bodyContent(data)),
-        );
-      },
+    final watchlistCubit = context.watch<WatchlistCubit>();
+
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Watchlist'),
+          bottom: (watchlistCubit.state is WatchlistHasData)
+              ? TabBar(
+                  tabs: [
+                    Text('Movies', style: kHeading6),
+                    Text('TVs', style: kHeading6),
+                  ],
+                  indicatorColor: kMikadoYellow,
+                )
+              : null,
+        ),
+        body: _bodyContent(watchlistCubit.state),
+      ),
     );
   }
 
-  Widget _bodyContent(WatchlistNotifier data) {
-    switch (data.watchlistState) {
-      case RequestState.loading:
-        return const Center(child: CircularProgressIndicator());
-      case RequestState.empty:
-        return const Center();
-      case RequestState.error:
-        return Center(
-          key: const Key('error_message'),
-          child: Text(data.message),
-        );
-      case RequestState.loaded:
-        return TabBarView(
-          children: [
-            _movieTab(data.watchlistMovies),
-            _tvTab(data.watchlistTvs),
-          ],
-        );
-      default:
-        return const Center();
+  Widget _bodyContent(WatchlistState state) {
+    // TODO: Add some text or widget when watchlist is empty
+    if (state is WatchlistLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is WatchlistError) {
+      return Center(
+        key: const Key('error_message'),
+        child: Text(state.message),
+      );
+    } else if (state is WatchlistHasData) {
+      return TabBarView(
+        children: [
+          _movieTab(state.movies),
+          _tvTab(state.tvs),
+        ],
+      );
+    } else {
+      return const SizedBox();
     }
   }
 
