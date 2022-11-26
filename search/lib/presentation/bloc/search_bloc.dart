@@ -19,7 +19,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   })  : _searchMovies = searchMovies,
         _searchTvs = searchTvs,
         super(SearchEmpty()) {
-    on<OnQueryChanged>(
+    on<SearchEvent>(
       _onQueryChanged,
       transformer: (events, mapper) => events
           .debounceTime(const Duration(milliseconds: 500))
@@ -27,7 +27,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     );
   }
 
-  _onQueryChanged(OnQueryChanged event, Emitter<SearchState> emit) async {
+  _onQueryChanged(SearchEvent event, Emitter<SearchState> emit) async {
     emit(SearchLoading());
     final query = event.query;
     try {

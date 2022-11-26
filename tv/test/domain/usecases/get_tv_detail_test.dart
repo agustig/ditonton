@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:tv/domain/usecases/get_tv_detail.dart';
 
 import '../../dummy_data/dummy_tv_objects.dart';
-import '../../helpers/test_helper.mocks.dart';
+import 'mock_tv_repository.dart';
 
 void main() {
   late GetTvDetail usecase;
@@ -20,7 +20,7 @@ void main() {
 
   test('should get list of TvDetail from the repository', () async {
     // arrange
-    when(mockTvRepository.getTvDetail(tId))
+    when(() => mockTvRepository.getTvDetail(tId))
         .thenAnswer((_) async => Right(tTvDetail));
     // act
     final result = await usecase.execute(tId);

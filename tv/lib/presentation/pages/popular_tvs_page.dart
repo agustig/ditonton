@@ -1,53 +1,41 @@
-import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tv/presentation/provider/popular_tvs_notifier.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tv/presentation/cubit/popular_tvs_cubit.dart';
 import 'package:tv/presentation/widgets/tv_card.dart';
 
-class PopularTvsPage extends StatefulWidget {
+class PopularTvsPage extends StatelessWidget {
   const PopularTvsPage({super.key});
 
   @override
-  State<PopularTvsPage> createState() => _PopularTvsPageState();
-}
-
-class _PopularTvsPageState extends State<PopularTvsPage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(
-      () => Provider.of<PopularTvsNotifier>(context, listen: false)
-          .fetchPopularTvs(),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    context.read<PopularTvsCubit>().fetch();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Popular TVs'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<PopularTvsNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.loading) {
+        child: BlocBuilder<PopularTvsCubit, PopularTvsState>(
+          builder: (context, state) {
+            if (state is PopularTvsLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.loaded) {
+            } else if (state is PopularTvsHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final tv = data.tvList[index];
+                  final tv = state.tvs[index];
                   return TvCard(tv);
                 },
-                itemCount: data.tvList.length,
+                itemCount: state.tvs.length,
               );
-            } else {
+            } else if (state is PopularTvsError) {
               return Center(
                 key: const Key('error_message'),
-                child: Text(data.message),
+                child: Text(state.message),
               );
+            } else {
+              return const SizedBox(key: Key('empty_state'));
             }
           },
         ),

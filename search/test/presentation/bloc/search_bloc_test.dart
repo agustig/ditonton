@@ -40,7 +40,7 @@ void main() {
           .thenAnswer((_) async => Right(tTvList));
       return searchBloc;
     },
-    act: (bloc) => bloc.add(OnQueryChanged(tQuery)),
+    act: (bloc) => bloc.add(SearchEvent(tQuery)),
     wait: const Duration(milliseconds: 500),
     expect: () => [
       SearchLoading(),
@@ -61,7 +61,7 @@ void main() {
           .thenAnswer((_) async => Right(tTvList));
       return searchBloc;
     },
-    act: (bloc) => bloc.add(OnQueryChanged(tQuery)),
+    act: (bloc) => bloc.add(SearchEvent(tQuery)),
     wait: const Duration(milliseconds: 500),
     expect: () => [SearchLoading(), SearchError('Server Failure')],
     verify: (bloc) {

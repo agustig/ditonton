@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:tv/data/models/tv_episode_model.dart';
 import 'package:tv/domain/entities/tv_season.dart';
 

@@ -31,7 +31,7 @@ void main() {
     voteAverage: 8.8,
   );
 
-  final t2TvDetailModel = testTvDetailModel;
+  final t2TvDetailModel = testTvDetailModelWithOutEpisodes;
 
   test('should be a subclass of TvDetail entity', () {
     final result = tTvDetailModel.toEntity();

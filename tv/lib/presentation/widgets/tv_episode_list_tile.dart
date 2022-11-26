@@ -23,26 +23,13 @@ class TvEpisodeListTile extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             child: Stack(
               children: [
-                (episode.stillPath != null)
-                    ? CachedNetworkImage(
-                        width: 150,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        imageUrl: '$baseImageUrl${episode.stillPath}',
-                      )
-                    : Container(
-                        width: 150,
-                        height: 100,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              'assets/no-image.png',
-                              package: 'core',
-                            ),
-                          ),
-                        ),
-                      ),
+                CustomCacheImage(
+                  imageUrlPath: episode.stillPath,
+                  secondLocalImage: 'assets/no-image.png',
+                  height: 100,
+                  width: 150,
+                  fit: BoxFit.cover,
+                ),
                 Positioned(
                   right: 4,
                   bottom: 4,

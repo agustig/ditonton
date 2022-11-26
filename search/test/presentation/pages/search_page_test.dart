@@ -26,7 +26,7 @@ void main() {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SearchBloc>(
-          create: (context) => mockSearchBloc..add(OnQueryChanged(tQuery)),
+          create: (context) => mockSearchBloc..add(SearchEvent(tQuery)),
         ),
         BlocProvider<SearchFilterCubit>(
           create: (context) => searchFilterCubit,

@@ -24,6 +24,18 @@ void init() {
       getWatchlistTvs: locator(),
     ),
   );
+  locator.registerFactory(() => OnTheAirTvsCubit(locator()));
+  locator.registerFactory(() => PopularTvsCubit(locator()));
+  locator.registerFactory(() => TopRatedTvsCubit(locator()));
+  locator.registerFactory(
+    () => TvDetailBloc(
+      getTvDetail: locator(),
+      getTvRecommendations: locator(),
+      getWatchlistTvStatus: locator(),
+      saveWatchlistTv: locator(),
+      removeWatchlistTv: locator(),
+    ),
+  );
 
   // provider
   locator.registerFactory(
@@ -52,18 +64,6 @@ void init() {
       getTopRatedTvs: locator(),
     ),
   );
-  locator.registerFactory(
-    () => TvDetailNotifier(
-      getTvDetail: locator(),
-      getTvRecommendations: locator(),
-      getWatchlistTvStatus: locator(),
-      saveWatchlistTv: locator(),
-      removeWatchlistTv: locator(),
-    ),
-  );
-  locator.registerFactory(() => OnTheAirTvsNotifier(locator()));
-  locator.registerFactory(() => PopularTvsNotifier(locator()));
-  locator.registerFactory(() => TopRatedTvsNotifier(locator()));
 
   // use case
   locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));

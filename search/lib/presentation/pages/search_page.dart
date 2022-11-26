@@ -19,7 +19,7 @@ class SearchPage extends StatelessWidget {
           children: [
             TextField(
               onChanged: (query) =>
-                  context.read<SearchBloc>().add(OnQueryChanged(query)),
+                  context.read<SearchBloc>().add(SearchEvent(query)),
               decoration: const InputDecoration(
                 hintText: 'Search title',
                 prefixIcon: Icon(Icons.search),
