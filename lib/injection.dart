@@ -24,6 +24,17 @@ void init() {
       getWatchlistTvs: locator(),
     ),
   );
+  locator.registerFactory(() => PopularMoviesCubit(locator()));
+  locator.registerFactory(() => TopRatedMoviesCubit(locator()));
+  locator.registerFactory(
+    () => MovieDetailBloc(
+      getMovieDetail: locator(),
+      getMovieRecommendations: locator(),
+      getWatchlistMovieStatus: locator(),
+      saveWatchlistMovie: locator(),
+      removeWatchlistMovie: locator(),
+    ),
+  );
   locator.registerFactory(() => OnTheAirTvsCubit(locator()));
   locator.registerFactory(() => PopularTvsCubit(locator()));
   locator.registerFactory(() => TopRatedTvsCubit(locator()));
@@ -46,18 +57,6 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => MovieDetailNotifier(
-      getMovieDetail: locator(),
-      getMovieRecommendations: locator(),
-      getWatchListStatus: locator(),
-      saveWatchlist: locator(),
-      removeWatchlist: locator(),
-    ),
-  );
-  locator.registerFactory(() => PopularMoviesNotifier(locator()));
-  locator.registerFactory(
-      () => TopRatedMoviesNotifier(getTopRatedMovies: locator()));
-  locator.registerFactory(
     () => TvListNotifier(
       getOnTheAirTvs: locator(),
       getPopularTvs: locator(),
@@ -72,9 +71,9 @@ void init() {
   locator.registerLazySingleton(() => GetMovieDetail(locator()));
   locator.registerLazySingleton(() => GetMovieRecommendations(locator()));
   locator.registerLazySingleton(() => SearchMovies(locator()));
-  locator.registerLazySingleton(() => GetWatchListStatus(locator()));
-  locator.registerLazySingleton(() => SaveWatchlist(locator()));
-  locator.registerLazySingleton(() => RemoveWatchlist(locator()));
+  locator.registerLazySingleton(() => GetWatchlistMovieStatus(locator()));
+  locator.registerLazySingleton(() => SaveWatchlistMovie(locator()));
+  locator.registerLazySingleton(() => RemoveWatchlistMovie(locator()));
   locator.registerLazySingleton(() => GetWatchlistMovies(locator()));
   locator.registerLazySingleton(() => GetOnTheAirTvs(locator()));
   locator.registerLazySingleton(() => GetPopularTvs(locator()));

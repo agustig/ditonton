@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (_) => di.locator<PopularMoviesCubit>()),
+        BlocProvider(create: (_) => di.locator<TopRatedMoviesCubit>()),
+        BlocProvider(create: (_) => di.locator<MovieDetailBloc>()),
         BlocProvider(create: (_) => di.locator<OnTheAirTvsCubit>()),
         BlocProvider(create: (_) => di.locator<PopularTvsCubit>()),
         BlocProvider(create: (_) => di.locator<TopRatedTvsCubit>()),
@@ -35,26 +38,8 @@ class MyApp extends StatelessWidget {
             create: (_) => di.locator<MovieListNotifier>(),
           ),
           ChangeNotifierProvider(
-            create: (_) => di.locator<MovieDetailNotifier>(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => di.locator<TopRatedMoviesNotifier>(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => di.locator<PopularMoviesNotifier>(),
-          ),
-          ChangeNotifierProvider(
             create: (_) => di.locator<TvListNotifier>(),
           ),
-          // ChangeNotifierProvider(
-          //   create: (_) => di.locator<TopRatedTvsNotifier>(),
-          // ),
-          // ChangeNotifierProvider(
-          //   create: (_) => di.locator<PopularTvsNotifier>(),
-          // ),
-          // ChangeNotifierProvider(
-          //   create: (_) => di.locator<OnTheAirTvsNotifier>(),
-          // ),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
@@ -71,29 +56,45 @@ class MyApp extends StatelessWidget {
               case '/home':
                 return MaterialPageRoute(builder: (_) => HomePage());
               case popularMoviesRoute:
-                return CupertinoPageRoute(builder: (_) => PopularMoviesPage());
+                return CupertinoPageRoute(builder: (context) {
+                  context.read<PopularMoviesCubit>().fetch();
+                  return PopularMoviesPage();
+                });
               case topRatedMoviesRoute:
-                return CupertinoPageRoute(builder: (_) => TopRatedMoviesPage());
+                return CupertinoPageRoute(builder: (context) {
+                  context.read<TopRatedMoviesCubit>().fetch();
+                  return TopRatedMoviesPage();
+                });
               case movieDetailRoute:
                 final id = settings.arguments as int;
                 return MaterialPageRoute(
-                  builder: (_) => MovieDetailPage(id: id),
+                  builder: (context) {
+                    context.read<MovieDetailBloc>().add(FetchMovieDetail(id));
+                    return MovieDetailPage();
+                  },
                   settings: settings,
                 );
               case onTheAirTvsRoute:
-                return CupertinoPageRoute(builder: (_) => OnTheAirTvsPage());
+                return CupertinoPageRoute(builder: (context) {
+                  context.read<OnTheAirTvsCubit>().fetch();
+                  return OnTheAirTvsPage();
+                });
               case popularTvsRoute:
-                return CupertinoPageRoute(builder: (_) => PopularTvsPage());
+                return CupertinoPageRoute(builder: (context) {
+                  context.read<PopularTvsCubit>().fetch();
+                  return PopularTvsPage();
+                });
               case topRatedTvsRoute:
-                return CupertinoPageRoute(builder: (_) => TopRatedTvsPage());
+                return CupertinoPageRoute(builder: (context) {
+                  context.read<TopRatedTvsCubit>().fetch();
+                  return TopRatedTvsPage();
+                });
               case tvDetailRoute:
                 final id = settings.arguments as int;
-
                 return MaterialPageRoute(
                   builder: (context) {
-                    // BlocProvider.of<TvDetailBloc>(context, listen: false)
-                    //     .add(FetchDetail(id));
-                    return TvDetailPage(id: id);
+                    context.read<TvDetailBloc>().add(FetchTvDetail(id));
+                    return TvDetailPage();
                   },
                   settings: settings,
                 );
@@ -104,13 +105,15 @@ class MyApp extends StatelessWidget {
               case aboutRoute:
                 return MaterialPageRoute(builder: (_) => AboutPage());
               default:
-                return MaterialPageRoute(builder: (_) {
-                  return Scaffold(
-                    body: Center(
-                      child: Text('Page not found :('),
-                    ),
-                  );
-                });
+                return MaterialPageRoute(
+                  builder: (_) {
+                    return Scaffold(
+                      body: Center(
+                        child: Text('Page not found :('),
+                      ),
+                    );
+                  },
+                );
             }
           },
         ),

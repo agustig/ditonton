@@ -1,17 +1,24 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/domain/entities/movie.dart';
 
 class MovieList extends StatelessWidget {
   final List<Movie> movies;
+  final double? height;
 
-  const MovieList(this.movies, {super.key});
+  final bool replaceOnPush;
+
+  const MovieList(
+    this.movies, {
+    super.key,
+    this.height = 200,
+    this.replaceOnPush = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: height,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
@@ -20,20 +27,25 @@ class MovieList extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  movieDetailRoute,
-                  arguments: movie.id,
-                );
+                if (replaceOnPush) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    movieDetailRoute,
+                    arguments: movie.id,
+                  );
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    movieDetailRoute,
+                    arguments: movie.id,
+                  );
+                }
               },
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(16)),
-                child: CachedNetworkImage(
-                  imageUrl: '$baseImageUrl${movie.posterPath}',
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                child: CustomCacheImage(
+                  imageUrlPath: movie.posterPath,
+                  secondLocalImage: 'assets/no-image-vertical.jpg',
                 ),
               ),
             ),

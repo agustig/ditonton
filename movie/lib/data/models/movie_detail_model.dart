@@ -12,7 +12,6 @@ class MovieDetailModel extends Equatable {
     required this.runtime,
     required this.title,
     required this.voteAverage,
-    required this.voteCount,
   });
 
   final List<GenreModel> genres;
@@ -23,7 +22,6 @@ class MovieDetailModel extends Equatable {
   final int runtime;
   final String title;
   final double voteAverage;
-  final int voteCount;
 
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) =>
       MovieDetailModel(
@@ -36,7 +34,6 @@ class MovieDetailModel extends Equatable {
         runtime: json["runtime"],
         title: json["title"],
         voteAverage: json["vote_average"].toDouble(),
-        voteCount: json["vote_count"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +44,6 @@ class MovieDetailModel extends Equatable {
         "runtime": runtime,
         "title": title,
         "vote_average": voteAverage,
-        "vote_count": voteCount,
       };
 
   MovieDetail toEntity() {
@@ -60,7 +56,6 @@ class MovieDetailModel extends Equatable {
       runtime: runtime,
       title: title,
       voteAverage: voteAverage,
-      voteCount: voteCount,
     );
   }
 
@@ -74,6 +69,5 @@ class MovieDetailModel extends Equatable {
         runtime,
         title,
         voteAverage,
-        voteCount,
       ];
 }

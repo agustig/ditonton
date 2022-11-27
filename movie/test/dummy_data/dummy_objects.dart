@@ -22,7 +22,6 @@ const testMovieDetail = MovieDetail(
   runtime: 120,
   title: 'title',
   voteAverage: 1,
-  voteCount: 1,
 );
 
 const testWatchlistMovie = Movie.watchlist(
