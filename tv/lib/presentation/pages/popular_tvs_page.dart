@@ -8,7 +8,6 @@ class PopularTvsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<PopularTvsCubit>().fetch();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Popular TVs'),

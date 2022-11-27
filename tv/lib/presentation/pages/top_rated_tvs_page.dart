@@ -8,7 +8,6 @@ class TopRatedTvsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<TopRatedTvsCubit>().fetch();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Top Rated TVs'),

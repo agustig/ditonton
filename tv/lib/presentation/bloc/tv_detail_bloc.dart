@@ -34,14 +34,14 @@ class TvDetailBloc extends Bloc<TvDetailEvent, TvDetailState> {
         _saveWatchlistTv = saveWatchlistTv,
         _removeWatchlistTv = removeWatchlistTv,
         super(TvDetailEmpty()) {
-    on<FetchDetail>(_onFetchDetail);
-    on<AddToWatchlist>(_onAddToWatchlist);
-    on<RemoveFromWatchlist>(_onRemoveFromWatchlist);
+    on<FetchTvDetail>(_onFetchDetail);
+    on<AddTvToWatchlist>(_onAddToWatchlist);
+    on<RemoveTvFromWatchlist>(_onRemoveFromWatchlist);
     on<ExpandSeason>(_onExpandSeason);
     on<CollapseSeason>(_onCloseExpandedSeason);
   }
 
-  _onFetchDetail(FetchDetail event, Emitter<TvDetailState> emit) async {
+  _onFetchDetail(FetchTvDetail event, Emitter<TvDetailState> emit) async {
     emit(TvDetailLoading());
 
     try {
@@ -76,7 +76,7 @@ class TvDetailBloc extends Bloc<TvDetailEvent, TvDetailState> {
     }
   }
 
-  _onAddToWatchlist(AddToWatchlist event, Emitter<TvDetailState> emit) async {
+  _onAddToWatchlist(AddTvToWatchlist event, Emitter<TvDetailState> emit) async {
     final tvDetail = _currentTvDataState.detail;
     try {
       final saveWatchlist = await _saveWatchlistTv.execute(tvDetail);
@@ -101,7 +101,7 @@ class TvDetailBloc extends Bloc<TvDetailEvent, TvDetailState> {
   }
 
   _onRemoveFromWatchlist(
-    RemoveFromWatchlist event,
+    RemoveTvFromWatchlist event,
     Emitter<TvDetailState> emit,
   ) async {
     final tvDetail = _currentTvDataState.detail;

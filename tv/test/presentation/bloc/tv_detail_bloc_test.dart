@@ -68,7 +68,7 @@ void main() {
           .thenAnswer((_) async => false);
       return tvDetailBloc;
     },
-    act: (bloc) => bloc.add(FetchDetail(testTvId)),
+    act: (bloc) => bloc.add(FetchTvDetail(testTvId)),
     expect: () => [
       TvDetailLoading(),
       initialDataState,
@@ -91,7 +91,7 @@ void main() {
           .thenAnswer((_) async => true);
       return tvDetailBloc;
     },
-    act: (bloc) => bloc.add(FetchDetail(testTvId)),
+    act: (bloc) => bloc.add(FetchTvDetail(testTvId)),
     expect: () => [
       TvDetailLoading(),
       TvDetailError('Server Failure'),
@@ -114,7 +114,7 @@ void main() {
           .thenThrow(DatabaseException('Failed to get watchlist'));
       return tvDetailBloc;
     },
-    act: (bloc) => bloc.add(FetchDetail(testTvId)),
+    act: (bloc) => bloc.add(FetchTvDetail(testTvId)),
     expect: () => [
       TvDetailLoading(),
       TvDetailError('Failed to get watchlist'),
@@ -145,9 +145,9 @@ void main() {
         return tvDetailBloc;
       },
       act: (bloc) async {
-        bloc.add(FetchDetail(testTvId));
+        bloc.add(FetchTvDetail(testTvId));
         Future.delayed(const Duration(milliseconds: 100))
-            .then((_) => bloc.add(AddToWatchlist()));
+            .then((_) => bloc.add(AddTvToWatchlist()));
       },
       wait: const Duration(milliseconds: 100),
       expect: () => [
@@ -177,9 +177,9 @@ void main() {
         return tvDetailBloc;
       },
       act: (bloc) async {
-        bloc.add(FetchDetail(testTvId));
+        bloc.add(FetchTvDetail(testTvId));
         Future.delayed(const Duration(milliseconds: 100))
-            .then((_) => bloc.add(AddToWatchlist()));
+            .then((_) => bloc.add(AddTvToWatchlist()));
       },
       wait: const Duration(milliseconds: 100),
       expect: () => [
@@ -209,9 +209,9 @@ void main() {
         return tvDetailBloc;
       },
       act: (bloc) async {
-        bloc.add(FetchDetail(testTvId));
+        bloc.add(FetchTvDetail(testTvId));
         Future.delayed(const Duration(milliseconds: 100))
-            .then((_) => bloc.add(RemoveFromWatchlist()));
+            .then((_) => bloc.add(RemoveTvFromWatchlist()));
       },
       wait: const Duration(milliseconds: 100),
       expect: () => [
@@ -243,9 +243,9 @@ void main() {
         return tvDetailBloc;
       },
       act: (bloc) async {
-        bloc.add(FetchDetail(testTvId));
+        bloc.add(FetchTvDetail(testTvId));
         Future.delayed(const Duration(milliseconds: 100))
-            .then((_) => bloc.add(RemoveFromWatchlist()));
+            .then((_) => bloc.add(RemoveTvFromWatchlist()));
       },
       wait: const Duration(milliseconds: 100),
       expect: () => [
@@ -281,7 +281,7 @@ void main() {
       'should emit [Loading, HasData, HasData] with expand value in last state',
       build: () => tvDetailBloc,
       act: (bloc) {
-        tvDetailBloc.add(FetchDetail(testTvId));
+        tvDetailBloc.add(FetchTvDetail(testTvId));
         Future.delayed(const Duration(milliseconds: 100))
             .then((_) => bloc.add(ExpandSeason(testTvSeason)));
       },
@@ -302,7 +302,7 @@ void main() {
       'should emit [Loading, HasData, HasData, HasData] with remove expand value in last state',
       build: () => tvDetailBloc,
       act: (bloc) {
-        tvDetailBloc.add(FetchDetail(testTvId));
+        tvDetailBloc.add(FetchTvDetail(testTvId));
         Future.delayed(const Duration(milliseconds: 100))
             .then((_) => bloc.add(ExpandSeason(testTvSeason)));
         Future.delayed(const Duration(milliseconds: 100))

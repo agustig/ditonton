@@ -5,8 +5,14 @@ import 'package:tv/domain/entities/tv.dart';
 class TvList extends StatelessWidget {
   final List<Tv> tvs;
   final double height;
+  final bool isReplaceOnPush;
 
-  const TvList(this.tvs, {super.key, this.height = 200});
+  const TvList(
+    this.tvs, {
+    super.key,
+    this.height = 200,
+    this.isReplaceOnPush = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +26,19 @@ class TvList extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  tvDetailRoute,
-                  arguments: tv.id,
-                );
+                if (isReplaceOnPush) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    tvDetailRoute,
+                    arguments: tv.id,
+                  );
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    tvDetailRoute,
+                    arguments: tv.id,
+                  );
+                }
               },
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(16)),

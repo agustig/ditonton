@@ -17,8 +17,9 @@ class SeasonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = List<Widget>.from(
-        season.episodes.map((episode) => TvEpisodeListTile(episode: episode)));
+    final children = List<Widget>.from(season.episodes.map(
+      (episode) => TvEpisodeListTile(episode: episode),
+    ));
 
     if (children.isNotEmpty) {
       children.insert(

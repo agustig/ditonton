@@ -26,6 +26,4 @@ void main() {
     // assert
     expect(result, Right(tTvList));
   });
-
-  // TODO: Add test for error case
 }

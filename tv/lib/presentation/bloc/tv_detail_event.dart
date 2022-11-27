@@ -2,15 +2,15 @@ part of 'tv_detail_bloc.dart';
 
 abstract class TvDetailEvent {}
 
-class FetchDetail extends TvDetailEvent {
+class FetchTvDetail extends TvDetailEvent {
   final int tvId;
 
-  FetchDetail(this.tvId);
+  FetchTvDetail(this.tvId);
 }
 
-class AddToWatchlist extends TvDetailEvent {}
+class AddTvToWatchlist extends TvDetailEvent {}
 
-class RemoveFromWatchlist extends TvDetailEvent {}
+class RemoveTvFromWatchlist extends TvDetailEvent {}
 
 class ExpandSeason extends TvDetailEvent {
   final TvSeason season;

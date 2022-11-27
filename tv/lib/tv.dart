@@ -33,3 +33,4 @@ export 'presentation/pages/tv_detail_page.dart';
 export 'presentation/widgets/tv_card.dart';
 export 'presentation/widgets/tv_episode_list_tile.dart';
 export 'presentation/widgets/tv_list.dart';
+export 'presentation/widgets/season_tile.dart';

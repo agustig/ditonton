@@ -31,7 +31,9 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   # To add assets to your package, add an assets section, like this:
-  # assets:
+  assets:
+    - packages/core/assets/no-image.png
+    - packages/core/assets/no-image-vertical.jpg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   #

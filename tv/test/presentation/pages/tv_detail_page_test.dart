@@ -38,7 +38,7 @@ void main() {
       // act
       final centerFinder = find.byType(Center);
       final progressBarFinder = find.byType(CircularProgressIndicator);
-      await tester.pumpWidget(makeTestableWidget(const TvDetailPage(id: 1)));
+      await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
       // assert
       expect(centerFinder, findsOneWidget);
       expect(progressBarFinder, findsOneWidget);
@@ -64,9 +64,7 @@ void main() {
         final seasonSelectedFinder = find.byKey(const Key('Selected: -1'));
         final seasonTileFinder = find.byType(SeasonTile);
         final recommendationSectionFinder = find.text('Recommendations');
-        await tester
-            .pumpWidget(makeTestableWidget(TvDetailPage(id: testTv.id)));
-        verifyNever(() => mockBloc.add(FetchDetail(testTv.id)));
+        await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
         // assert
         expect(detailContentFinder, findsOneWidget);
         expect(draggableSheetFinder, findsOneWidget);
@@ -86,7 +84,7 @@ void main() {
         );
         // act
         final findWatchlistIcon = find.byIcon(Icons.check);
-        await tester.pumpWidget(makeTestableWidget(const TvDetailPage(id: 1)));
+        await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
         // assert
         expect(findWatchlistIcon, findsOneWidget);
       },
@@ -105,11 +103,74 @@ void main() {
         ));
         final episodeSectionFinder = find.text('Episodes:');
         final episodeListTileFinder = find.byType(TvEpisodeListTile);
-        await tester.pumpWidget(makeTestableWidget(const TvDetailPage(id: 1)));
+        await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
         // assert
         expect(seasonSelectedFinder, findsOneWidget);
         expect(episodeSectionFinder, findsOneWidget);
         expect(episodeListTileFinder, findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'should display watchlist added status when add tv to watchlist is success',
+      (tester) async {
+        final states = [
+          tTvDetailDataState.changeAttr(
+            isOnWatchlist: true,
+            watchlistMessage: 'Added to Watchlist',
+          ),
+        ];
+        when(() => mockBloc.state).thenAnswer((_) => tTvDetailDataState);
+        whenListen(mockBloc, Stream.fromIterable(states));
+
+        await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
+        expect(find.byIcon(Icons.add), findsOneWidget);
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pump();
+        expect(find.byIcon(Icons.check), findsOneWidget);
+        expect(find.text('Added to Watchlist'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'should display watchlist removed status when remove tv to watchlist is success',
+      (tester) async {
+        final states = [
+          tTvDetailDataState.changeAttr(
+            isOnWatchlist: false,
+            watchlistMessage: 'Removed from Watchlist',
+          ),
+        ];
+        when(() => mockBloc.state).thenAnswer(
+            (_) => tTvDetailDataState.changeAttr(isOnWatchlist: true));
+        whenListen(mockBloc, Stream.fromIterable(states));
+
+        await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
+        expect(find.byIcon(Icons.check), findsOneWidget);
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pump();
+        expect(find.byIcon(Icons.add), findsOneWidget);
+        expect(find.text('Removed from Watchlist'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'should display alertDialog when add tv to watchlist is failed',
+      (tester) async {
+        final states = [
+          tTvDetailDataState.changeAttr(
+            watchlistMessage: 'Database Failure',
+          ),
+        ];
+        when(() => mockBloc.state).thenAnswer((_) => tTvDetailDataState);
+        whenListen(mockBloc, Stream.fromIterable(states));
+
+        await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
+        expect(find.byIcon(Icons.add), findsOneWidget);
+        await tester.pump();
+        expect(find.byIcon(Icons.add), findsOneWidget);
+        expect(find.byType(AlertDialog), findsOneWidget);
+        expect(find.text('Database Failure'), findsOneWidget);
       },
     );
   });
@@ -122,7 +183,7 @@ void main() {
       // act
       final keyFinder = find.byKey(const Key('error_message'));
       final textFinder = find.text('Error message');
-      await tester.pumpWidget(makeTestableWidget(const TvDetailPage(id: 1)));
+      await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
       // assert
       expect(keyFinder, findsOneWidget);
       expect(textFinder, findsOneWidget);
@@ -137,7 +198,7 @@ void main() {
       // act
       final keyFinder = find.byKey(const Key('empty_state'));
       final sizedBoxFinder = find.byType(SizedBox);
-      await tester.pumpWidget(makeTestableWidget(const TvDetailPage(id: 1)));
+      await tester.pumpWidget(makeTestableWidget(const TvDetailPage()));
       // assert
       expect(keyFinder, findsOneWidget);
       expect(sizedBoxFinder, findsOneWidget);

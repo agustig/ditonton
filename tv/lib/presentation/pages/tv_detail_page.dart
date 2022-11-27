@@ -2,16 +2,15 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:tv/presentation/bloc/tv_detail_bloc.dart';
 import 'package:tv/presentation/widgets/season_tile.dart';
-import 'package:tv/tv.dart';
+import 'package:tv/presentation/widgets/tv_list.dart';
 
 class TvDetailPage extends StatelessWidget {
-  final int id;
-  const TvDetailPage({super.key, required this.id});
+  const TvDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    context.read<TvDetailBloc>().add(FetchDetail(id));
     return Scaffold(
       body: BlocConsumer<TvDetailBloc, TvDetailState>(
         listener: (context, state) {
@@ -106,9 +105,9 @@ class DetailTvContent extends StatelessWidget {
                                 final tvDetailBloc =
                                     context.read<TvDetailBloc>();
                                 if (!tvDataState.isAddedToWatchlist) {
-                                  tvDetailBloc.add(AddToWatchlist());
+                                  tvDetailBloc.add(AddTvToWatchlist());
                                 } else {
-                                  tvDetailBloc.add(RemoveFromWatchlist());
+                                  tvDetailBloc.add(RemoveTvFromWatchlist());
                                 }
                               },
                               child: Row(
@@ -175,6 +174,7 @@ class DetailTvContent extends StatelessWidget {
                                     TvList(
                                       tvDataState.tvRecommendations,
                                       height: 150,
+                                      isReplaceOnPush: true,
                                     )
                                   ]
                                 : [
@@ -217,43 +217,6 @@ class DetailTvContent extends StatelessWidget {
       ],
     );
   }
-
-  // Widget _recommendationSection(List<Tv> recommendations) {
-  //   return SizedBox(
-  //     height: 150,
-  //     child: ListView.builder(
-  //       scrollDirection: Axis.horizontal,
-  //       itemBuilder: (context, index) {
-  //         final tv = recommendations[index];
-  //         return Padding(
-  //           padding: const EdgeInsets.all(4.0),
-  //           child: InkWell(
-  //             onTap: () {
-  //               Navigator.pushReplacementNamed(
-  //                 context,
-  //                 tvDetailRoute,
-  //                 arguments: tv.id,
-  //               );
-  //             },
-  //             child: ClipRRect(
-  //               borderRadius: const BorderRadius.all(
-  //                 Radius.circular(8),
-  //               ),
-  //               child: CachedNetworkImage(
-  //                 imageUrl: 'https://image.tmdb.org/t/p/w500${tv.posterPath}',
-  //                 placeholder: (context, url) => const Center(
-  //                   child: CircularProgressIndicator(),
-  //                 ),
-  //                 errorWidget: (context, url, error) => const Icon(Icons.error),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //       itemCount: recommendations.length,
-  //     ),
-  //   );
-  // }
 
   String _showGenres(List<Genre> genres) {
     String result = '';

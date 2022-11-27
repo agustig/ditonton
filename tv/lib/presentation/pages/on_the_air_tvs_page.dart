@@ -8,7 +8,6 @@ class OnTheAirTvsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<OnTheAirTvsCubit>().fetch();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Airing TV Shows'),
