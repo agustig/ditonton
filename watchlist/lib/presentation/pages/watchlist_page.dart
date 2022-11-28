@@ -14,19 +14,13 @@ class WatchlistPage extends StatefulWidget {
 
 class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => context.read<WatchlistCubit>().fetchWatchlist());
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
   @override
-  void didPopNext() => context.read<WatchlistCubit>().fetchWatchlist();
+  void didPopNext() => context.read<WatchlistCubit>().fetch();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +47,6 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   }
 
   Widget _bodyContent(WatchlistState state) {
-    // TODO: Add some text or widget when watchlist is empty
     if (state is WatchlistLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is WatchlistError) {
@@ -69,32 +62,54 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
         ],
       );
     } else {
-      return const SizedBox();
+      return const SizedBox(key: Key('empty_state'));
     }
   }
 
   Widget _movieTab(List<Movie> moviesData) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          final movie = moviesData[index];
-          return MovieCard(movie);
-        },
-        itemCount: moviesData.length,
-      ),
-    );
+    if (moviesData.isEmpty) {
+      return _emptyWatchlist('Movie');
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            final movie = moviesData[index];
+            return MovieCard(movie);
+          },
+          itemCount: moviesData.length,
+        ),
+      );
+    }
   }
 
   Widget _tvTab(List<Tv> tvsData) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          final tv = tvsData[index];
-          return TvCard(tv);
-        },
-        itemCount: tvsData.length,
+    if (tvsData.isEmpty) {
+      return _emptyWatchlist('TV');
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            final tv = tvsData[index];
+            return TvCard(tv);
+          },
+          itemCount: tvsData.length,
+        ),
+      );
+    }
+  }
+
+  Widget _emptyWatchlist(String label) {
+    return Center(
+      child: Column(
+        children: [
+          Text(
+            '$label watchlist is empty',
+            style: kHeading5,
+          ),
+          Text('Try to add some $label to watchlist')
+        ],
       ),
     );
   }

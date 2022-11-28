@@ -18,7 +18,7 @@ class WatchlistCubit extends Cubit<WatchlistState> {
         _getWatchlistTvs = getWatchlistTvs,
         super(WatchlistEmpty());
 
-  void fetchWatchlist() async {
+  void fetch() async {
     emit(WatchlistLoading());
     try {
       final moviesGet = await _getWatchlistMovies.execute();

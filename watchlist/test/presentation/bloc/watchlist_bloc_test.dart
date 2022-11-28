@@ -39,7 +39,7 @@ void main() {
           .thenAnswer((_) async => Right(testWatchlistTvList));
       return watchlistCubit;
     },
-    act: (cubit) => cubit.fetchWatchlist(),
+    act: (cubit) => cubit.fetch(),
     expect: () => [
       WatchlistLoading(),
       WatchlistHasData(
@@ -50,7 +50,23 @@ void main() {
   );
 
   blocTest(
-    'Should state has [WatchlistLoading, WatchlistError] when get watchlist is successful',
+    'Should state has [WatchlistLoading, WatchlistError] when get movie watchlist is error',
+    build: () {
+      when(() => mockGetWatchlistMovies.execute()).thenAnswer((_) async =>
+          const Left(DatabaseFailure('Error when get data from Local')));
+      when(() => mockGetWatchlistTvs.execute())
+          .thenAnswer((_) async => Right(testWatchlistTvList));
+      return watchlistCubit;
+    },
+    act: (cubit) => cubit.fetch(),
+    expect: () => [
+      WatchlistLoading(),
+      WatchlistError('Error when get data from Local'),
+    ],
+  );
+
+  blocTest(
+    'Should state has [WatchlistLoading, WatchlistError] when get tv watchlist is error',
     build: () {
       when(() => mockGetWatchlistMovies.execute())
           .thenAnswer((_) async => Right(testWatchlistMovieList));
@@ -58,7 +74,7 @@ void main() {
           const Left(DatabaseFailure('Error when get data from Local')));
       return watchlistCubit;
     },
-    act: (cubit) => cubit.fetchWatchlist(),
+    act: (cubit) => cubit.fetch(),
     expect: () => [
       WatchlistLoading(),
       WatchlistError('Error when get data from Local'),
