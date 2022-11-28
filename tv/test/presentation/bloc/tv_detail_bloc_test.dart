@@ -104,6 +104,29 @@ void main() {
   );
 
   blocTest<TvDetailBloc, TvDetailState>(
+    'Should emit [Loading, Error] when recommendation data is unsuccessfully',
+    build: () {
+      when(() => mockGetTvDetail.execute(testTvId))
+          .thenAnswer((_) async => Right(testTvDetail));
+      when(() => mockGetTvRecommendations.execute(testTvId))
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
+      when(() => mockGetWatchlistTvStatus.execute(testTvId))
+          .thenAnswer((_) async => true);
+      return tvDetailBloc;
+    },
+    act: (bloc) => bloc.add(FetchTvDetail(testTvId)),
+    expect: () => [
+      TvDetailLoading(),
+      TvDetailError('Server Failure'),
+    ],
+    verify: (_) {
+      verify(() => mockGetTvDetail.execute(testTvId));
+      verify(() => mockGetTvRecommendations.execute(testTvId));
+      verify(() => mockGetWatchlistTvStatus.execute(testTvId));
+    },
+  );
+
+  blocTest<TvDetailBloc, TvDetailState>(
     'Should emit [Loading, Error] when watchlistStatus data is unsuccessfully',
     build: () {
       when(() => mockGetTvDetail.execute(testTvId))
@@ -126,7 +149,7 @@ void main() {
     },
   );
 
-  group('insert or remove watchlist', () {
+  group('insert or remove Tv watchlist', () {
     setUp(() {
       when(() => mockGetTvDetail.execute(testTvId))
           .thenAnswer((_) async => Right(testTvDetail));
@@ -197,6 +220,37 @@ void main() {
         verify(() => mockSaveWatchlistTv.execute(testTvDetail));
       },
     );
+    blocTest<TvDetailBloc, TvDetailState>(
+      'should emit [Loading, HasData, Error] when save watchlist is not successful with Exception',
+      build: () {
+        final List<Future<bool> Function(Invocation)> mockResult = [
+          (_) async => false,
+          (_) => throw DatabaseException('Failed to get watchlist'),
+        ];
+        when(() => mockGetWatchlistTvStatus.execute(testTvId))
+            .thenAnswer((invocation) => mockResult.removeAt(0)(invocation));
+        when(() => mockSaveWatchlistTv.execute(testTvDetail))
+            .thenAnswer((_) async => const Right('Added to Watchlist'));
+        return tvDetailBloc;
+      },
+      act: (bloc) async {
+        bloc.add(FetchTvDetail(testTvId));
+        Future.delayed(const Duration(milliseconds: 100))
+            .then((_) => bloc.add(AddTvToWatchlist()));
+      },
+      wait: const Duration(milliseconds: 100),
+      expect: () => [
+        TvDetailLoading(),
+        initialDataState,
+        TvDetailError('Failed to get watchlist'),
+      ],
+      verify: (_) {
+        verify(() => mockGetTvDetail.execute(testTvId));
+        verify(() => mockGetTvRecommendations.execute(testTvId));
+        verify(() => mockGetWatchlistTvStatus.execute(testTvId)).called(2);
+        verify(() => mockSaveWatchlistTv.execute(testTvDetail));
+      },
+    );
 
     blocTest<TvDetailBloc, TvDetailState>(
       'should emit [Loading, HasData, HasData] when remove watchlist is successful',
@@ -257,6 +311,40 @@ void main() {
           isOnWatchlist: true,
           watchlistMessage: 'Remove failed',
         )
+      ],
+      verify: (_) {
+        verify(() => mockGetTvDetail.execute(testTvId));
+        verify(() => mockGetTvRecommendations.execute(testTvId));
+        verify(() => mockGetWatchlistTvStatus.execute(testTvId)).called(2);
+        verify(() => mockRemoveWatchlistTv.execute(testTvDetail));
+      },
+    );
+
+    blocTest<TvDetailBloc, TvDetailState>(
+      'should emit [Loading, HasData, Error] when remove watchlist is not successful with Exception',
+      build: () {
+        final List<Future<bool> Function(Invocation)> mockResult = [
+          (_) async => true,
+          (_) => throw DatabaseException('Failed to get watchlist'),
+        ];
+        when(() => mockGetWatchlistTvStatus.execute(testTvId))
+            .thenAnswer((invocation) => mockResult.removeAt(0)(invocation));
+        when(() => mockRemoveWatchlistTv.execute(testTvDetail))
+            .thenAnswer((_) async => const Right('Remove Success'));
+        return tvDetailBloc;
+      },
+      act: (bloc) async {
+        bloc.add(FetchTvDetail(testTvId));
+        Future.delayed(const Duration(milliseconds: 100))
+            .then((_) => bloc.add(RemoveTvFromWatchlist()));
+      },
+      wait: const Duration(milliseconds: 100),
+      expect: () => [
+        TvDetailLoading(),
+        initialDataState.changeAttr(
+          isOnWatchlist: true,
+        ),
+        TvDetailError('Failed to get watchlist'),
       ],
       verify: (_) {
         verify(() => mockGetTvDetail.execute(testTvId));

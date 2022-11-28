@@ -32,7 +32,7 @@ void main() {
     stillPath: 'stillPath',
   );
 
-  final tTvSeasonModel = TvSeasonModel(
+  final tTvSeasonModelWithEpisode = TvSeasonModel(
     id: 1,
     seasonNumber: 1,
     name: 'Season 1',
@@ -42,7 +42,7 @@ void main() {
     episodes: const [tTvEpisodeModel],
   );
 
-  const tTvSeason = TvSeason(
+  const tTvSeasonWithEpisode = TvSeason(
     id: 1,
     seasonNumber: 1,
     name: 'Season 1',
@@ -52,11 +52,36 @@ void main() {
     episodes: [tTvEpisode],
   );
 
+  final tTvSeasonModel = TvSeasonModel(
+    id: 1,
+    seasonNumber: 1,
+    name: 'Season 1',
+    overview: '',
+    airDate: 'airDate',
+    posterPath: '',
+  );
+
+  const tTvSeason = TvSeason(
+    id: 1,
+    seasonNumber: 1,
+    name: 'Season 1',
+    overview: '',
+    airDate: 'airDate',
+    posterPath: '',
+    episodes: [],
+  );
+
   final t2TvSeasonModel = testTvSeasonModel;
 
   test('should be a subclass of TvSeason entity', () {
+    final resultWithEpisode = tTvSeasonModelWithEpisode.toEntity();
     final result = tTvSeasonModel.toEntity();
+    expect(resultWithEpisode, tTvSeasonWithEpisode);
     expect(result, tTvSeason);
+  });
+
+  test('should get some episode model', (){
+    expect(tTvSeasonModelWithEpisode.episodes, [tTvEpisodeModel]);
   });
 
   group('fromJson', () {

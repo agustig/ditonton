@@ -26,25 +26,4 @@ void main() {
       expect(result, tMovieResponseModel);
     });
   });
-
-  group('toJson', () {
-    test('should return a JSON map containing proper data', () async {
-      // arrange
-
-      // act
-      final result = tMovieResponseModel.toJson();
-      // assert
-      final expectedJsonMap = {
-        "results": [
-          {
-            "id": 1,
-            "overview": "Overview",
-            "poster_path": "/path.jpg",
-            "title": "Title",
-          }
-        ],
-      };
-      expect(result, expectedJsonMap);
-    });
-  });
 }

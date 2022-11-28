@@ -163,10 +163,25 @@ void main() {
     );
 
     test(
-      'should throw Server Exception when the response code is 404 or other',
+      'should throw Server Exception when the detail response code is 404 or other',
       () async {
         // arrange
         when(() => mockHttpClient.get(Uri.parse(tvDetailUrl)))
+            .thenAnswer((_) async => http.Response('Not Found', 404));
+        // act
+        final call = dataSource.getTvDetail(tId);
+        // assert
+        expect(() => call, throwsA(isA<ServerException>()));
+      },
+    );
+
+    test(
+      'should throw Server Exception when the season response code is 404 or other',
+      () async {
+        // arrange
+        when(() => mockHttpClient.get(Uri.parse(tvDetailUrl))).thenAnswer(
+            (_) async => http.Response(readJson(tvDetailJson), 200));
+        when(() => mockHttpClient.get(Uri.parse(tvSeasonUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getTvDetail(tId);

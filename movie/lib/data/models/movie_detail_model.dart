@@ -26,7 +26,8 @@ class MovieDetailModel extends Equatable {
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) =>
       MovieDetailModel(
         genres: List<GenreModel>.from(
-            json["genres"].map((x) => GenreModel.fromJson(x))),
+          json["genres"].map((x) => GenreModel.fromJson(x)),
+        ),
         id: json["id"],
         overview: json["overview"],
         posterPath: json["poster_path"],
@@ -35,16 +36,6 @@ class MovieDetailModel extends Equatable {
         title: json["title"],
         voteAverage: json["vote_average"].toDouble(),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "overview": overview,
-        "poster_path": posterPath,
-        "release_date": releaseDate,
-        "runtime": runtime,
-        "title": title,
-        "vote_average": voteAverage,
-      };
 
   MovieDetail toEntity() {
     return MovieDetail(

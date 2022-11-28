@@ -21,13 +21,6 @@ class MovieModel extends Equatable {
         title: json["title"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "overview": overview,
-        "poster_path": posterPath,
-        "title": title,
-      };
-
   Movie toEntity() {
     return Movie(
       id: id,

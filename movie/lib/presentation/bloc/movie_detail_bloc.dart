@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/domain/entities/movie.dart';
 import 'package:movie/domain/entities/movie_detail.dart';
@@ -68,7 +67,6 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
         isOnWatchlist: getWatchlistStatus,
       );
 
-      debugPrint('emit called');
       emit(_currentMovieDataState);
     } on Failure catch (failure) {
       emit(MovieDetailError(failure.message));
