@@ -12,6 +12,16 @@ final locator = GetIt.instance;
 void init() {
   // bloc
   locator.registerFactory(
+    () => HomeCubit(
+      getNowPlayingMovies: locator(),
+      getPopularMovies: locator(),
+      getTopRatedMovies: locator(),
+      getOnTheAirTvs: locator(),
+      getPopularTvs: locator(),
+      getTopRatedTvs: locator(),
+    ),
+  );
+  locator.registerFactory(
     () => SearchBloc(
       searchMovies: locator(),
       searchTvs: locator(),
@@ -45,22 +55,6 @@ void init() {
       getWatchlistTvStatus: locator(),
       saveWatchlistTv: locator(),
       removeWatchlistTv: locator(),
-    ),
-  );
-
-  // provider
-  locator.registerFactory(
-    () => MovieListNotifier(
-      getNowPlayingMovies: locator(),
-      getPopularMovies: locator(),
-      getTopRatedMovies: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => TvListNotifier(
-      getOnTheAirTvs: locator(),
-      getPopularTvs: locator(),
-      getTopRatedTvs: locator(),
     ),
   );
 

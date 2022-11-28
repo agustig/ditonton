@@ -1,39 +1,17 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:home/presentation/provider/movie_list_notifier.dart';
-import 'package:home/presentation/provider/tv_list_notifier.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home/home.dart';
 import 'package:movie/movie.dart';
-import 'package:provider/provider.dart';
 import 'package:tv/tv.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      Provider.of<MovieListNotifier>(context, listen: false)
-        ..fetchNowPlayingMovies()
-        ..fetchPopularMovies()
-        ..fetchTopRatedMovies();
-      Provider.of<TvListNotifier>(context, listen: false)
-        ..fetchOnTheAirTvs()
-        ..fetchPopularTvs()
-        ..fetchTopRatedTvs();
-    });
-  }
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      initialIndex: 0,
       child: Scaffold(
         drawer: Drawer(
           child: Column(
@@ -82,14 +60,35 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.search),
             )
           ],
-          bottom: TabBar(
-            tabs: _tabBar,
-            indicatorColor: kMikadoYellow,
-          ),
+          bottom: (context.watch<HomeCubit>().state is HomeHasData)
+              ? TabBar(
+                  tabs: _tabBar,
+                  indicatorColor: kMikadoYellow,
+                )
+              : null,
         ),
-        body: TabBarView(children: _tabBarView(context)),
+        body: _bodyContent(context),
       ),
     );
+  }
+
+  Widget _bodyContent(BuildContext context) {
+    final homeState = context.watch<HomeCubit>().state;
+    if (homeState is HomeLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (homeState is HomeHasData) {
+      return TabBarView(children: [
+        _movieTab(context, homeState),
+        _tvTab(context, homeState),
+      ]);
+    } else if (homeState is HomeError) {
+      return Center(
+        key: const Key('error_message'),
+        child: Text(homeState.message),
+      );
+    } else {
+      return const SizedBox(key: Key('empty_state'));
+    }
   }
 
   final _tabBar = [
@@ -97,11 +96,7 @@ class _HomePageState extends State<HomePage> {
     Text('TVs', style: kHeading6),
   ];
 
-  List<Widget> _tabBarView(BuildContext context) {
-    return [_movieTab(context), _tvTab(context)];
-  }
-
-  Padding _movieTab(BuildContext context) {
+  Padding _movieTab(BuildContext context, HomeHasData dataState) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
@@ -112,57 +107,24 @@ class _HomePageState extends State<HomePage> {
               'Now Playing',
               style: kHeading6,
             ),
-            Consumer<MovieListNotifier>(builder: (context, data, child) {
-              final state = data.nowPlayingState;
-              if (state == RequestState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state == RequestState.loaded) {
-                return MovieList(data.nowPlayingMovies);
-              } else {
-                return const Text('Failed');
-              }
-            }),
+            MovieList(dataState.nowPlayingMovies),
             _buildSubHeading(
               title: 'Popular',
               onTap: () => Navigator.pushNamed(context, popularMoviesRoute),
             ),
-            Consumer<MovieListNotifier>(builder: (context, data, child) {
-              final state = data.popularMoviesState;
-              if (state == RequestState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state == RequestState.loaded) {
-                return MovieList(data.popularMovies);
-              } else {
-                return const Text('Failed');
-              }
-            }),
+            MovieList(dataState.popularMovies),
             _buildSubHeading(
               title: 'Top Rated',
               onTap: () => Navigator.pushNamed(context, topRatedMoviesRoute),
             ),
-            Consumer<MovieListNotifier>(builder: (context, data, child) {
-              final state = data.topRatedMoviesState;
-              if (state == RequestState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state == RequestState.loaded) {
-                return MovieList(data.topRatedMovies);
-              } else {
-                return const Text('Failed');
-              }
-            }),
+            MovieList(dataState.topRatedMovies),
           ],
         ),
       ),
     );
   }
 
-  Padding _tvTab(BuildContext context) {
+  Padding _tvTab(BuildContext context, HomeHasData dataState) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
@@ -173,50 +135,17 @@ class _HomePageState extends State<HomePage> {
               title: 'Airing TV Shows',
               onTap: () => Navigator.pushNamed(context, onTheAirTvsRoute),
             ),
-            Consumer<TvListNotifier>(builder: (context, data, child) {
-              final state = data.airingTodayState;
-              if (state == RequestState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state == RequestState.loaded) {
-                return TvList(data.onTheAirTvs);
-              } else {
-                return const Text('Failed');
-              }
-            }),
+            TvList(dataState.onTheAirTvs),
             _buildSubHeading(
               title: 'Popular',
               onTap: () => Navigator.pushNamed(context, popularTvsRoute),
             ),
-            Consumer<TvListNotifier>(builder: (context, data, child) {
-              final state = data.popularTvsState;
-              if (state == RequestState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state == RequestState.loaded) {
-                return TvList(data.popularTvs);
-              } else {
-                return const Text('Failed');
-              }
-            }),
+            TvList(dataState.popularTvs),
             _buildSubHeading(
               title: 'Top Rated',
               onTap: () => Navigator.pushNamed(context, topRatedTvsRoute),
             ),
-            Consumer<TvListNotifier>(builder: (context, data, child) {
-              final state = data.topRatedTvsState;
-              if (state == RequestState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state == RequestState.loaded) {
-                return TvList(data.topRatedTvs);
-              } else {
-                return const Text('Failed');
-              }
-            }),
+            TvList(dataState.topRatedTvs),
           ],
         ),
       ),
