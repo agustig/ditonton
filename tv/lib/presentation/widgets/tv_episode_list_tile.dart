@@ -48,6 +48,7 @@ class TvEpisodeListTile extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   _showEpisodeName(episode.episodeNumber, episode.name),
@@ -58,6 +59,7 @@ class TvEpisodeListTile extends StatelessWidget {
                 Text(
                   episode.overview,
                   overflow: TextOverflow.ellipsis,
+                  style: kHeading6.copyWith(fontSize: 12),
                   softWrap: true,
                   maxLines: 3,
                 ),
