@@ -80,7 +80,7 @@ void main() {
     expect(result, tTvSeason);
   });
 
-  test('should get some episode model', (){
+  test('should get some episode model', () {
     expect(tTvSeasonModelWithEpisode.episodes, [tTvEpisodeModel]);
   });
 

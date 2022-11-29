@@ -1,5 +1,6 @@
 library core;
 
+export 'data/datasources/api/api_helper.dart';
 export 'data/datasources/db/database_helper.dart';
 export 'data/models/genre_model.dart';
 export 'domain/entities/genre.dart';

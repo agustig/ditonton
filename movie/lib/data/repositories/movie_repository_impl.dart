@@ -23,6 +23,8 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final result = await remoteDataSource.getNowPlayingMovies();
       return Right(result.map((model) => model.toEntity()).toList());
+    } on TlsException {
+      return const Left(TlsFailure('Certificate error'));
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {
@@ -35,6 +37,8 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final result = await remoteDataSource.getMovieDetail(id);
       return Right(result.toEntity());
+    } on TlsException {
+      return const Left(TlsFailure('Certificate error'));
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {
@@ -47,6 +51,8 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final result = await remoteDataSource.getMovieRecommendations(id);
       return Right(result.map((model) => model.toEntity()).toList());
+    } on TlsException {
+      return const Left(TlsFailure('Certificate error'));
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {
@@ -59,6 +65,8 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final result = await remoteDataSource.getPopularMovies();
       return Right(result.map((model) => model.toEntity()).toList());
+    } on TlsException {
+      return const Left(TlsFailure('Certificate error'));
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {
@@ -71,6 +79,8 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final result = await remoteDataSource.getTopRatedMovies();
       return Right(result.map((model) => model.toEntity()).toList());
+    } on TlsException {
+      return const Left(TlsFailure('Certificate error'));
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {
@@ -83,6 +93,8 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final result = await remoteDataSource.searchMovies(query);
       return Right(result.map((model) => model.toEntity()).toList());
+    } on TlsException {
+      return const Left(TlsFailure('Certificate error'));
     } on ServerException {
       return const Left(ServerFailure(''));
     } on SocketException {

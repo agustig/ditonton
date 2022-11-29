@@ -70,6 +70,20 @@ void main() {
     );
 
     test(
+      'should return Tls failure when the the apiServer certificate is not valid',
+      () async {
+        // arrange
+        when(() => mockRemoteDataSource.getNowPlayingMovies())
+            .thenThrow(const TlsException());
+        // act
+        final result = await repository.getNowPlayingMovies();
+        // assert
+        verify(() => mockRemoteDataSource.getNowPlayingMovies());
+        expect(result, equals(const Left(TlsFailure('Certificate error'))));
+      },
+    );
+
+    test(
       'should return server failure when the call to remote data source is unsuccessful',
       () async {
         // arrange
@@ -118,6 +132,20 @@ void main() {
     );
 
     test(
+      'should return Tls failure when the the apiServer certificate is not valid',
+      () async {
+        // arrange
+        when(() => mockRemoteDataSource.getPopularMovies())
+            .thenThrow(const TlsException());
+        // act
+        final result = await repository.getPopularMovies();
+        // assert
+        verify(() => mockRemoteDataSource.getPopularMovies());
+        expect(result, equals(const Left(TlsFailure('Certificate error'))));
+      },
+    );
+
+    test(
       'should return server failure when call to data source is unsuccessful',
       () async {
         // arrange
@@ -158,6 +186,20 @@ void main() {
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
         expect(resultList, tMovieList);
+      },
+    );
+
+    test(
+      'should return Tls failure when the the apiServer certificate is not valid',
+      () async {
+        // arrange
+        when(() => mockRemoteDataSource.getTopRatedMovies())
+            .thenThrow(const TlsException());
+        // act
+        final result = await repository.getTopRatedMovies();
+        // assert
+        verify(() => mockRemoteDataSource.getTopRatedMovies());
+        expect(result, equals(const Left(TlsFailure('Certificate error'))));
       },
     );
 
@@ -217,6 +259,20 @@ void main() {
     );
 
     test(
+      'should return Tls failure when the the apiServer certificate is not valid',
+      () async {
+        // arrange
+        when(() => mockRemoteDataSource.getMovieDetail(tId))
+            .thenThrow(const TlsException());
+        // act
+        final result = await repository.getMovieDetail(tId);
+        // assert
+        verify(() => mockRemoteDataSource.getMovieDetail(tId));
+        expect(result, equals(const Left(TlsFailure('Certificate error'))));
+      },
+    );
+
+    test(
       'should return Server Failure when the call to remote data source is unsuccessful',
       () async {
         // arrange
@@ -269,6 +325,20 @@ void main() {
     );
 
     test(
+      'should return Tls failure when the the apiServer certificate is not valid',
+      () async {
+        // arrange
+        when(() => mockRemoteDataSource.getMovieRecommendations(tId))
+            .thenThrow(const TlsException());
+        // act
+        final result = await repository.getMovieRecommendations(tId);
+        // assert
+        verify(() => mockRemoteDataSource.getMovieRecommendations(tId));
+        expect(result, equals(const Left(TlsFailure('Certificate error'))));
+      },
+    );
+
+    test(
       'should return server failure when call to remote data source is unsuccessful',
       () async {
         // arrange
@@ -315,6 +385,20 @@ void main() {
         /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
         final resultList = result.getOrElse(() => []);
         expect(resultList, tMovieList);
+      },
+    );
+
+    test(
+      'should return Tls failure when the the apiServer certificate is not valid',
+      () async {
+        // arrange
+        when(() => mockRemoteDataSource.searchMovies(tQuery))
+            .thenThrow(const TlsException());
+        // act
+        final result = await repository.searchMovies(tQuery);
+        // assert
+        verify(() => mockRemoteDataSource.searchMovies(tQuery));
+        expect(result, equals(const Left(TlsFailure('Certificate error'))));
       },
     );
 

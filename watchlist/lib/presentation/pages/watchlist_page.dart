@@ -103,6 +103,7 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   Widget _emptyWatchlist(String label) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             '$label watchlist is empty',

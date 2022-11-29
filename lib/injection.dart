@@ -1,7 +1,9 @@
+import 'package:core/core.dart';
 import 'package:core/data/datasources/db/database_helper.dart';
 import 'package:home/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
+import 'package:http/io_client.dart';
 import 'package:movie/movie.dart';
 import 'package:search/search.dart';
 import 'package:tv/tv.dart';
@@ -92,16 +94,17 @@ void init() {
 
   // data sources
   locator.registerLazySingleton<MovieRemoteDataSource>(
-      () => MovieRemoteDataSourceImpl(client: locator()));
+      () => MovieRemoteDataSourceImpl(apiHelper: locator()));
   locator.registerLazySingleton<MovieLocalDataSource>(
       () => MovieLocalDataSourceImpl(databaseHelper: locator()));
   locator.registerLazySingleton<TvRemoteDataSource>(
-      () => TvRemoteDataSourceImpl(client: locator()));
+      () => TvRemoteDataSourceImpl(apiHelper: locator()));
   locator.registerLazySingleton<TvLocalDataSource>(
       () => TvLocalDataSourceImpl(databaseHelper: locator()));
 
   // helper
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
+  locator.registerLazySingleton<ApiHelper>(() => ApiHelper());
 
   // external
   locator.registerLazySingleton(() => http.Client());

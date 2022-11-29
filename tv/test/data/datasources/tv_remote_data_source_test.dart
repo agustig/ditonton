@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:core/utils/constants.dart';
-import 'package:core/utils/exception.dart';
+import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
@@ -12,15 +11,15 @@ import 'package:tv/data/models/tv_season_model.dart';
 
 import '../../json_reader.dart';
 
-class MockHttpClient extends Mock implements http.Client {}
+class MockApiHelper extends Mock implements ApiHelper {}
 
 void main() {
   late TvRemoteDataSourceImpl dataSource;
-  late MockHttpClient mockHttpClient;
+  late MockApiHelper mockApiHelper;
 
   setUp(() {
-    mockHttpClient = MockHttpClient();
-    dataSource = TvRemoteDataSourceImpl(client: mockHttpClient);
+    mockApiHelper = MockApiHelper();
+    dataSource = TvRemoteDataSourceImpl(apiHelper: mockApiHelper);
   });
 
   group('get on The Air Tvs', () {
@@ -35,7 +34,7 @@ void main() {
       'should return list of TvModel when the response code is 200',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(onTheAirTvsUrl))).thenAnswer(
+        when(() => mockApiHelper.get(Uri.parse(onTheAirTvsUrl))).thenAnswer(
             (_) async => http.Response(readJson(onTheAirTvsJson), 200));
         // act
         final result = await dataSource.getOnTheAirTvs();
@@ -48,7 +47,7 @@ void main() {
       'should throw a ServerException when the response code is 404 or other',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(onTheAirTvsUrl)))
+        when(() => mockApiHelper.get(Uri.parse(onTheAirTvsUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getOnTheAirTvs();
@@ -70,7 +69,7 @@ void main() {
       'should return list of tvs when response is success (200)',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(popularTvsUrl))).thenAnswer(
+        when(() => mockApiHelper.get(Uri.parse(popularTvsUrl))).thenAnswer(
             (_) async => http.Response(readJson(popularTvsJson), 200));
         // act
         final result = await dataSource.getPopularTvs();
@@ -83,7 +82,7 @@ void main() {
       'should throw a ServerException when the response code is 404 or other',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(popularTvsUrl)))
+        when(() => mockApiHelper.get(Uri.parse(popularTvsUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getPopularTvs();
@@ -105,7 +104,7 @@ void main() {
       'should return list of tvs when response code is 200 ',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(topRatedTvsUrl))).thenAnswer(
+        when(() => mockApiHelper.get(Uri.parse(topRatedTvsUrl))).thenAnswer(
             (_) async => http.Response(readJson(topRatedTvsJson), 200));
         // act
         final result = await dataSource.getTopRatedTvs();
@@ -118,7 +117,7 @@ void main() {
       'should throw ServerException when response code is other than 200',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(topRatedTvsUrl)))
+        when(() => mockApiHelper.get(Uri.parse(topRatedTvsUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getTopRatedTvs();
@@ -150,9 +149,9 @@ void main() {
       'should return tv detail when the response code is 200',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(tvDetailUrl))).thenAnswer(
+        when(() => mockApiHelper.get(Uri.parse(tvDetailUrl))).thenAnswer(
             (_) async => http.Response(readJson(tvDetailJson), 200));
-        when(() => mockHttpClient.get(Uri.parse(tvSeasonUrl))).thenAnswer(
+        when(() => mockApiHelper.get(Uri.parse(tvSeasonUrl))).thenAnswer(
           (_) async => http.Response(readJson(tvSeasonJson), 200),
         );
         // act
@@ -166,7 +165,7 @@ void main() {
       'should throw Server Exception when the detail response code is 404 or other',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(tvDetailUrl)))
+        when(() => mockApiHelper.get(Uri.parse(tvDetailUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getTvDetail(tId);
@@ -179,9 +178,9 @@ void main() {
       'should throw Server Exception when the season response code is 404 or other',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(tvDetailUrl))).thenAnswer(
+        when(() => mockApiHelper.get(Uri.parse(tvDetailUrl))).thenAnswer(
             (_) async => http.Response(readJson(tvDetailJson), 200));
-        when(() => mockHttpClient.get(Uri.parse(tvSeasonUrl)))
+        when(() => mockApiHelper.get(Uri.parse(tvSeasonUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getTvDetail(tId);
@@ -204,7 +203,7 @@ void main() {
       'should return list of Tv Model when the response code is 200',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(tvRecommendationsUrl)))
+        when(() => mockApiHelper.get(Uri.parse(tvRecommendationsUrl)))
             .thenAnswer((_) async =>
                 http.Response(readJson(tvRecommendationsJson), 200));
         // act
@@ -218,7 +217,7 @@ void main() {
       'should throw Server Exception when the response code is 404 or other',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(tvRecommendationsUrl)))
+        when(() => mockApiHelper.get(Uri.parse(tvRecommendationsUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getTvRecommendations(tId);
@@ -241,7 +240,7 @@ void main() {
       'should return list of tvs when response code is 200',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(searchTvUrl))).thenAnswer(
+        when(() => mockApiHelper.get(Uri.parse(searchTvUrl))).thenAnswer(
             (_) async => http.Response(readJson(searchTvJson), 200));
         // act
         final result = await dataSource.searchTvs(tQuery);
@@ -254,7 +253,7 @@ void main() {
       'should throw ServerException when response code is other than 200',
       () async {
         // arrange
-        when(() => mockHttpClient.get(Uri.parse(searchTvUrl)))
+        when(() => mockApiHelper.get(Uri.parse(searchTvUrl)))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.searchTvs(tQuery);
