@@ -49,6 +49,8 @@ dev_dependencies:
   bloc_test: ^9.1.0
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   mocktail: ^0.3.0
 
 # For information on the generic Dart part of this file, see the

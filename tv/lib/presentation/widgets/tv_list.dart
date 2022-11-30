@@ -23,6 +23,7 @@ class TvList extends StatelessWidget {
         itemBuilder: (context, index) {
           final tv = tvs[index];
           return Container(
+            key: Key('tv-list-item$index'),
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {

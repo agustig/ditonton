@@ -24,6 +24,7 @@ class MovieList extends StatelessWidget {
         itemBuilder: (context, index) {
           final movie = movies[index];
           return Container(
+            key: Key('movie-list-item$index'),
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {

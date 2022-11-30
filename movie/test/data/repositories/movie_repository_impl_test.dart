@@ -167,8 +167,12 @@ void main() {
         // act
         final result = await repository.getPopularMovies();
         // assert
-        expect(result,
-            const Left(ConnectionFailure('Failed to connect to the network')));
+        expect(
+          result,
+          const Left(
+            ConnectionFailure('Failed to connect to the network'),
+          ),
+        );
       },
     );
   });
@@ -225,8 +229,12 @@ void main() {
         // act
         final result = await repository.getTopRatedMovies();
         // assert
-        expect(result,
-            const Left(ConnectionFailure('Failed to connect to the network')));
+        expect(
+          result,
+          const Left(
+            ConnectionFailure('Failed to connect to the network'),
+          ),
+        );
       },
     );
   });
@@ -297,9 +305,11 @@ void main() {
         // assert
         verify(() => mockRemoteDataSource.getMovieDetail(tId));
         expect(
-            result,
-            equals(const Left(
-                ConnectionFailure('Failed to connect to the network'))));
+          result,
+          equals(
+            const Left(ConnectionFailure('Failed to connect to the network')),
+          ),
+        );
       },
     );
   });
@@ -363,9 +373,11 @@ void main() {
         // assert
         verify(() => mockRemoteDataSource.getMovieRecommendations(tId));
         expect(
-            result,
-            equals(const Left(
-                ConnectionFailure('Failed to connect to the network'))));
+          result,
+          equals(
+            const Left(ConnectionFailure('Failed to connect to the network')),
+          ),
+        );
       },
     );
   });
@@ -424,8 +436,12 @@ void main() {
         // act
         final result = await repository.searchMovies(tQuery);
         // assert
-        expect(result,
-            const Left(ConnectionFailure('Failed to connect to the network')));
+        expect(
+          result,
+          const Left(
+            ConnectionFailure('Failed to connect to the network'),
+          ),
+        );
       },
     );
   });
@@ -482,7 +498,11 @@ void main() {
         final result = await repository.removeWatchlist(testMovieDetail);
         // assert
         expect(
-            result, const Left(DatabaseFailure('Failed to remove watchlist')));
+          result,
+          const Left(
+            DatabaseFailure('Failed to remove watchlist'),
+          ),
+        );
       },
     );
   });

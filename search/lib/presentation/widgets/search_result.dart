@@ -30,6 +30,7 @@ class SearchResult extends StatelessWidget {
                 style: kHeading6,
               ),
               DropdownButton<SearchFilterOption>(
+                key: const Key('search-filter-dropdown'),
                 value: searchFilter,
                 onChanged: (value) {
                   context.read<SearchFilterCubit>().filterBy(value);
