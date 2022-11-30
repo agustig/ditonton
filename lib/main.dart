@@ -98,7 +98,10 @@ class MyApp extends StatelessWidget {
                 settings: settings,
               );
             case searchRoute:
-              return CupertinoPageRoute(builder: (_) => SearchPage());
+              return CupertinoPageRoute(builder: (context) {
+                context.read<SearchBloc>().add(SearchStart());
+                return SearchPage();
+              });
             case watchlistRoute:
               return MaterialPageRoute(builder: (context) {
                 context.read<WatchlistCubit>().fetch();

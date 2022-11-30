@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:search/presentation/bloc/search_bloc.dart';
@@ -19,7 +20,7 @@ class SearchPage extends StatelessWidget {
           children: [
             TextField(
               onChanged: (query) =>
-                  context.read<SearchBloc>().add(SearchEvent(query)),
+                  context.read<SearchBloc>().add(QueryChange(query)),
               decoration: const InputDecoration(
                 hintText: 'Search title',
                 prefixIcon: Icon(Icons.search),
@@ -44,7 +45,14 @@ class SearchPage extends StatelessWidget {
                     child: Text(state.message),
                   );
                 } else {
-                  return const SizedBox();
+                  return Center(
+                    child: SizedBox(
+                      child: Text(
+                        'Search Movie or TV Show by title',
+                        style: kSubtitle,
+                      ),
+                    ),
+                  );
                 }
               }),
             )

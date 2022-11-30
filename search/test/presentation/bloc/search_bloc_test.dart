@@ -31,6 +31,13 @@ void main() {
     expect(searchBloc.state, SearchEmpty());
   });
 
+  blocTest(
+    'should state is empty when SearchStart call',
+    build: () => searchBloc,
+    act: (bloc) => bloc.add(SearchStart()),
+    expect: () => [SearchEmpty()],
+  );
+
   blocTest<SearchBloc, SearchState>(
     'Should emit [Loading, HasData] when data is gotten successfully',
     build: () {
@@ -40,7 +47,7 @@ void main() {
           .thenAnswer((_) async => Right(tTvList));
       return searchBloc;
     },
-    act: (bloc) => bloc.add(SearchEvent(tQuery)),
+    act: (bloc) => bloc.add(QueryChange(tQuery)),
     wait: const Duration(milliseconds: 500),
     expect: () => [
       SearchLoading(),
@@ -61,12 +68,20 @@ void main() {
           .thenAnswer((_) async => Right(tTvList));
       return searchBloc;
     },
-    act: (bloc) => bloc.add(SearchEvent(tQuery)),
+    act: (bloc) => bloc.add(QueryChange(tQuery)),
     wait: const Duration(milliseconds: 500),
     expect: () => [SearchLoading(), SearchError('Server Failure')],
     verify: (bloc) {
       verify(() => mockSearchMovies.execute(tQuery));
       verify(() => mockSearchTvs.execute(tQuery));
     },
+  );
+
+  blocTest<SearchBloc, SearchState>(
+    'Should emit [Loading, Empty] when query is empty',
+    build: () => searchBloc,
+    act: (bloc) => bloc.add(QueryChange('')),
+    wait: const Duration(milliseconds: 500),
+    expect: () => [SearchLoading(), SearchEmpty()],
   );
 }

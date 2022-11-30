@@ -1,7 +1,11 @@
 part of 'search_bloc.dart';
 
-class SearchEvent {
+abstract class SearchEvent {}
+
+class QueryChange extends SearchEvent {
   final String query;
 
-  SearchEvent(this.query);
+  QueryChange(this.query);
 }
+
+class SearchStart extends SearchEvent {}

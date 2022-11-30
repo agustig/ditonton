@@ -26,7 +26,7 @@ void main() {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SearchBloc>(
-          create: (context) => mockSearchBloc..add(SearchEvent(tQuery)),
+          create: (context) => mockSearchBloc,
         ),
         BlocProvider<SearchFilterCubit>(
           create: (context) => searchFilterCubit,
@@ -38,40 +38,61 @@ void main() {
     );
   }
 
-  testWidgets('Should shown Progress bar when search is loading',
-      (tester) async {
-    when(() => mockSearchBloc.state).thenAnswer((_) => SearchLoading());
+  testWidgets(
+    'Should shown Progress bar when search is loading',
+    (tester) async {
+      when(() => mockSearchBloc.state).thenAnswer((_) => SearchLoading());
 
-    final progressBarFinder = find.byType(CircularProgressIndicator);
+      final progressBarFinder = find.byType(CircularProgressIndicator);
 
-    await tester.pumpWidget(makeTestableWidget(const SearchPage()));
+      await tester.pumpWidget(makeTestableWidget(const SearchPage()));
 
-    expect(progressBarFinder, findsOneWidget);
-  });
+      expect(progressBarFinder, findsOneWidget);
+    },
+  );
 
-  testWidgets('Should shown SearchResult when search is successful',
-      (tester) async {
-    when(() => mockSearchBloc.state).thenAnswer(
-      (_) => SearchHasData(movies: tMovieList, tvs: tTvList),
-    );
+  testWidgets(
+    'Should shown SearchResult when search is successful',
+    (tester) async {
+      when(() => mockSearchBloc.state).thenAnswer(
+        (_) => SearchHasData(movies: tMovieList, tvs: tTvList),
+      );
 
-    final searchResultFinder = find.byType(SearchResult);
+      final searchResultFinder = find.byType(SearchResult);
 
-    await tester.pumpWidget(makeTestableWidget(const SearchPage()));
+      await tester.pumpWidget(makeTestableWidget(const SearchPage()));
 
-    expect(searchResultFinder, findsOneWidget);
-  });
+      expect(searchResultFinder, findsOneWidget);
+    },
+  );
 
-  testWidgets('Should shown Error message when search is error',
-      (tester) async {
-    when(() => mockSearchBloc.state).thenAnswer(
-      (_) => SearchError('Server Error'),
-    );
+  testWidgets(
+    'Should shown Error message when search is error',
+    (tester) async {
+      when(() => mockSearchBloc.state).thenAnswer(
+        (_) => SearchError('Server Error'),
+      );
 
-    final textFinder = find.text('Server Error');
+      final textFinder = find.text('Server Error');
 
-    await tester.pumpWidget(makeTestableWidget(const SearchPage()));
+      await tester.pumpWidget(makeTestableWidget(const SearchPage()));
 
-    expect(textFinder, findsOneWidget);
-  });
+      expect(textFinder, findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'Should shown Empty message when search is empty',
+    (tester) async {
+      when(() => mockSearchBloc.state).thenAnswer(
+        (_) => SearchEmpty(),
+      );
+
+      final textFinder = find.text('Search Movie or TV Show by title');
+
+      await tester.pumpWidget(makeTestableWidget(const SearchPage()));
+
+      expect(textFinder, findsOneWidget);
+    },
+  );
 }

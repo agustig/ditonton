@@ -19,7 +19,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   })  : _searchMovies = searchMovies,
         _searchTvs = searchTvs,
         super(SearchEmpty()) {
-    on<SearchEvent>(
+    on<SearchStart>(_onSearchStart);
+    on<QueryChange>(
       _onQueryChanged,
       transformer: (events, mapper) => events
           .debounceTime(const Duration(milliseconds: 500))
@@ -27,29 +28,37 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     );
   }
 
-  _onQueryChanged(SearchEvent event, Emitter<SearchState> emit) async {
+  _onSearchStart(SearchStart event, Emitter<SearchState> emit) {
+    emit(SearchEmpty());
+  }
+
+  _onQueryChanged(QueryChange event, Emitter<SearchState> emit) async {
     emit(SearchLoading());
     final query = event.query;
-    try {
-      final movieSearch = await _searchMovies.execute(query);
-      final tvSearch = await _searchTvs.execute(query);
+    if (query.isEmpty) {
+      emit(SearchEmpty());
+    } else {
+      try {
+        final movieSearch = await _searchMovies.execute(query);
+        final tvSearch = await _searchTvs.execute(query);
 
-      late List<Movie> movieResult;
-      late List<Tv> tvResult;
+        late List<Movie> movieResult;
+        late List<Tv> tvResult;
 
-      movieSearch.fold((failure) {
-        throw failure;
-      }, (data) {
-        movieResult = data;
-      });
-      tvSearch.fold((failure) {
-        throw failure;
-      }, (data) {
-        tvResult = data;
-      });
-      emit(SearchHasData(movies: movieResult, tvs: tvResult));
-    } on Failure catch (failure) {
-      emit(SearchError(failure.message));
+        movieSearch.fold((failure) {
+          throw failure;
+        }, (data) {
+          movieResult = data;
+        });
+        tvSearch.fold((failure) {
+          throw failure;
+        }, (data) {
+          tvResult = data;
+        });
+        emit(SearchHasData(movies: movieResult, tvs: tvResult));
+      } on Failure catch (failure) {
+        emit(SearchError(failure.message));
+      }
     }
   }
 }
