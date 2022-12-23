@@ -6,7 +6,6 @@ workflows:
       groups: 
         - codecov_credentials
         - recipients
-        - other
       vars:
         CODE_COVERAGE_TARGET: 90
       flutter: stable
