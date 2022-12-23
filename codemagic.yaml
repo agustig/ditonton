@@ -1,0 +1,85 @@
+# Automatically generated on 2022-12-23 UTC from https://codemagic.io/app/637e114a8d8ede000af3da4b/settings
+# Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
+
+workflows:
+  default-workflow:
+    name: Default Workflow
+    max_build_duration: 60
+    environment:
+      groups: 
+        - codecov_credentials
+        - recipients
+      vars: 
+      - CODE_COVERAGE_TARGET: 90
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+      tag_patterns:
+        - pattern: '*'
+          include: true
+    scripts:
+      - name: Set up debug keystore
+        scrips: |
+          rm -f ~/.android/debug.keystore
+          keytool -genkeypair \
+            -alias androiddebugkey \
+            -keypass android \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -dname 'CN=Android Debug,O=Android,C=US' \
+            -keyalg 'RSA' \
+            -keysize 2048 \
+            -validity 10000
+      - name: Set up local properties
+        script: |
+          echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+        
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Flutter test
+        script: |
+          flutter test packages
+      - name: Collecting code coverage and storing in a location
+        script: |
+          HOMEBREW_NO_AUTO_UPDATE=1 brew install lcov
+          mkdir -p test-results 
+          flutter test --coverage --machine > test-results/flutter.json  
+          code_coverage=$(lcov --list $CM_BUILD_DIR/coverage/lcov.info | sed -n "s/.*Total:|\(.*\)%.*/\1/p")
+          echo "Code Coverage: ${code_coverage}% " | bc); then { echo "uploading to codecov" }; fi 
+          if (( $(echo "$code_coverage < $CODE_COVERAGE_TARGET" | bc) )); then { echo "code coverage is less than expected" && exit 1; }; fi
+        test_report: test-results/flutter.json
+      - name: Codecov upload
+        script: |
+          #!/bin/bash
+          curl -Os https://uploader.codecov.io/latest/macos/codecov
+          chmod +x codecov
+          ./codecov -t ${CODECOV_TOKEN} -f "test-results/flutter.json"
+
+      - name: Build APK with Flutter
+        script: |
+          flutter build appbundle --release
+      - find . -name "Podfile" -execdir pod install \;
+      - name: Build iOS App with Flutter
+        script: |
+          flutter build ios --release --no-codesign
+    artifacts:
+      - build/**/outputs/apk/**/*.apk
+      - build/**/outputs/bundle/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - '*.snap'
+      - build/windows/**/*.msix
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - $RECIPIENT_EMAIL
